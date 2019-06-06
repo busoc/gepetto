@@ -1,0 +1,1655 @@
+{
+    "ControlCenterSpecs" : {
+        "centerName" : "B.USOC",
+        "logo" : "assets/img/Patch.jpg",
+        "YamcsServer" : {
+            "location" : "http://virtualtest2.busoc.be/yamcs",
+            "authentication" : "Basic YnVzb2NvcHM6SzIsaXYhVDk="
+        },
+        "HourglassServerLocation" : "http://virtualtest2.busoc.be/api",
+        "Payloads" : [
+            {
+                "name" : "fsl",
+                "activityTemplates": [
+                    {
+                        "label": "DMS-FSL FILE-U/L",
+                        "value": {
+                            "duration": 1200,
+                            "summary": "DMS-FSL FILE-U/L",
+                            "description": "FSL file uplink to Columbus MMU - Ground required to perform FSL file uplink and switch on Columbus MMU. Col-CC uplinks the file on-board according to provided ICN. Ground only activity. S-Band required. --------------------------------------------------------- STRATOS can perform this activity The STRATOS margin to plan the next activity is 10 minutes.",
+                            "categories": ["fsl", "uplink"],
+                            "metadata": {
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMU-FSL-XFER",
+                        "value": {
+                            "duration": 1800,
+                            "summary": "MMU-FSL-XFER",
+                            "description": "Perform a file transfer from the DMS MMU to the FSL rack - This is a ground-only activity to transfer a file from the Columbus Data Management System (DMS) Mass Memory Unit (MMU) to the Fluid Science Laboratory (FSL) rack. (This activity will normally be preceded by the file uplink from Col-CC to the MMU.) --------------------------------------------------------- STRATOS can support this activity. The STRATOS margin to plan the next activity is 5 minutes.",
+                            "categories": ["fsl", "transfer"],
+                            "metadata": {
+                            }
+                        }
+                    }
+                ],
+                "activitySequences": []
+            },
+            {
+                "name" : "asim",
+                "activityTemplates": [
+                    {
+                        "label": "DMS-ASIM FILE-U/XFER",
+                        "value": {
+                            "duration": 1800,
+                            "summary": "DMS-ASIM FILE-U/XFER",
+                            "description": "ASIM daily file uplink and transfer - Perform ASIM daily file uplink to Columbus MMU and switch of file(s) on the MMU. Col-CC uplinks the file on-board according to provided ICN. Additionally, transfer file(s) from the Columbus Data Management System (DMS) Mass Memory Unit (MMU) to ASIM. Ground only activity. S-Band required. This activity combines the uplink (DMS-ASIM FILE-U/L) and transfer (MMU-ASIM-XFER) for the daily ASIM files. --------------------------------------------------------- STRATOS performs this activity The STRATOS margin to plan the next activity is 10 minutes.",
+                            "categories": ["asim", "uplink", "transfer"],
+                            "metadata": {
+                            }
+                        }
+                    },
+                    {
+                        "label": "CZT ROC enable",
+                        "value": {
+                            "duration": 30,
+                            "summary": "CZT ROC enable",
+                            "description": "CZT Read-Out Chains enabled during the night passes. Move away from the light to have 2 mins between start night and ROC enable. Move ROC disable away 30 secs from day start.",
+                            "categories": ["asim", "operations"],
+                            "metadata": {
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA - Cosmic Event Rejection Enabled",
+                        "value": {
+                            "duration": 0,
+                            "summary": "MMIA - Cosmic Event Rejection Enabled",
+                            "description": "Cosmic event rejection enable activity. If the nights with SAA are longer than 2 minutes, the cosmic event rejection flag has to be enabled. MMIA SRAM, MEM ID 2230, addres 16 -> 8000",
+                            "categories": ["asim", "operations"],
+                            "metadata": {
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA - Cosmic Event Rejection Disabled",
+                        "value": {
+                            "duration": 0,
+                            "summary": "MMIA - Cosmic Event Rejection Disabled",
+                            "description": "Cosmic event rejection disable activity. If the nights with SAA are longer than 2 minutes, the cosmic event rejection flag has to be enabled. MMIA SRAM, MEM ID 2230, addres 16 -> 8000",
+                            "categories": ["asim", "operations"],
+                            "metadata": {
+                            }
+                        }
+                    },
+                    {
+                        "label": "COL-ASIM-01",
+                        "value": {
+                            "duration": 30,
+                            "summary": "XCMU data connection and commanding",
+                            "description": "Verify the correct functioning of the XCMU Control and Monitor lines: The three digital I/O lines are operational. The two analogue I/O lines are operational. Send XCMU 28V pulse command to switch OFF the Feeder#1 relay. Verify the power Feeder#2 is ON and the survival heaters are active.Verify the XCMU provided TM is available and updating.Monitor both DHPU temperatures measured by XCMU and verify they stabilise within the operational temperature range",
+                            "categories": ["asim", "commissioning"],
+                            "metadata": {
+                                "constraints:" : "PDU1 Outlet 3 deactivated or PPSB SDX_1 switch to discharge. PDU2 Outlet 3 activated and PPSB SDX_2 switch to ON",
+                                "module": "Commissioning: COLUMBUS-to-ASIM Connectivity",
+                                "initial conditions": "ASIM powered OFF ",
+                                "final system mode": "ASIM powered OFF",
+                                "GCP steps": "E_JSP_1217, E_JSP_1402 step 3, E_JSP_1403, GCP 1.1 DHPU activation",
+                                "Notes": "To be completed before COL-ASIM-02, duration given is only the commanding the monitoring can last for several hours",
+                                "Support": "STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "COL-ASIM-02",
+                        "value": {
+                            "duration": 20,
+                            "summary": "Power On",
+                            "description": "Verify the power connection between the ASIM payload and Columbus.Send XCMU 28V pulse command to power ON Feeder#1. This will power ON the payload. Verify the power consumption on PDU1 outlet 3 is increasing.",
+                            "categories": ["asim", "commissioning"],
+                            "metadata": {
+                                "Constraints:" : "PPSB SDX_1 and SDX_2 switches to ON position.PDU1 Outlet 3 and PDU2 Outlet 3 activated",
+                                "Module": "Commissioning: COLUMBUS-to-ASIM Connectivity",
+                                "Initial conditions": "ASIM powered OFF ",
+                                "Final system mode": "ASIM powered on, DHPU: ON - operational, MMIA: OFF, MXGS: OFF",
+                                "GCP steps": "E_JSP_1215,E_JSP_1401,GCP 1.1 DHPU activation",
+                                "Notes": "To be completed before COL-ASIM-03",
+                                "Support": "STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "COL-ASIM-03",
+                        "value": {
+                            "duration": 20,
+                            "summary": "Data Connection",
+                            "description": "To verify the data connections between Columbus and the ASIM payload.Verify the DHPU H&S data is received. Verify the DHPU HK data is received. Send a test command",
+                            "categories": ["asim", "commissioning"],
+                            "metadata": {
+                                "Constraints:" : "/",
+                                "Module": "Commissioning: COLUMBUS-to-ASIM Connectivity",
+                                "Initial conditions": "DHPU: ON – operational, MMIA: OFF, MXGS: OFF ",
+                                "Final system mode": "DHPU: ON – operational, MMIA: OFF, MXGS: OFF",
+                                "GCP steps": "GCP 1.3 DHPU checkout",
+                                "Notes": "To be started before SYS-DHPU-01",
+                                "Support": "Payload Developer (OHB-I)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "COL-ASIM-04",
+                        "value": {
+                            "duration": 60,
+                            "summary": "Graceful shutdown",
+                            "description": "To verify the ability to perform a graceful shutdown of the payload.",
+                            "categories": ["asim", "commissioning"],
+                            "metadata": {
+                                "Constraints:" : "At the end of this test ASIM will be off. STRATOS support is needed to re-activate ASIM",
+                                "Module": "Commissioning: COLUMBUS-to-ASIM Connectivity",
+                                "Initial conditions": "DHPU: on – operational, MMIA: OFF, MXGS: OFF ",
+                                "Final system mode": "DHPU: OFF, MMIA: OFF, MXGS: OFF",
+                                "GCP steps": "E_JSP_2104 Step 2, E_JSP_1402, E_JSP_1401, GCP 1.2 DHPU deactivation",
+                                "Notes": "STRATOS to stop R/T acquisition before sending the graceful shutdown command.",
+                                "Support": "STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "COL-ASIM-05",
+                        "value": {
+                            "duration": 60,
+                            "summary": "Crew laptop RS-422 external payload interface",
+                            "description": "Check out the interface between the crew laptop and the RS-422 line to ASIM.",
+                            "categories": ["asim", "commissioning"],
+                            "metadata": {
+                                "Constraints:" : "The necessary adapter and data cables have to be available in-orbit. The Crew Procedure is available on board. Any laptop can be used, as long as a serial terminal program is available (e.g. HyperTerm). Nice to have: DVD available on board with new flashback-2 software (including ASIM)",
+                                "Module": "Commissioning: COLUMBUS-to-ASIM Connectivity",
+                                "Initial conditions": "DHPU: on – operational, MMIA: OFF, MXGS: OFF ",
+                                "Final system mode": "DHPU: ON - operational, MMIA: OFF, MXGS: OFF",
+                                "GCP steps": "E_ASIM_1100 ASIM Serial Line Laptop Check",
+                                "Notes": "The completion of this step is not a prerequisite to proceed to the next phase or module.",
+                                "Support": "CREW, (STRATOS if needed for SUP (de)activation but can be done by crew)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-01",
+                        "value": {
+                            "duration": 240,
+                            "summary": "DHPU Thermal Control Check",
+                            "description": "Verify and monitor the evolution of the different temperature readings available in the DHPU H&S.",
+                            "categories": ["asim", "commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "GCP 1.3 DHPU Checkout",
+                                "Notes": "Can be combined with COL-ASIM-03 and SYS-DHPU-02",
+                                "Support": "Payload Developer (OHB-I)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-02",
+                        "value": {
+                            "duration": 120,
+                            "summary": "DHPU Monitoring on ground",
+                            "description": "Verify the H&S and HK data received from the DHPU and verify if all values are as expected.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA: OFF ",
+                                "GCP steps": "GCP 1.3 DHPU Checkout",
+                                "Notes": "Can be combined with COL-ASIM-03 and SYS-DHPU-01",
+                                "Support": "Payload Developer (OHB-I)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-03",
+                        "value": {
+                            "duration": 10,
+                            "summary": "DHPU Reboot ",
+                            "description": "Perform a reboot by TC and verify the DHPU boots correctly.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "GCP 4.1 DHPU Reboot",
+                                "Notes": "Prerequisite for SYS-DHPU-06"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-04",
+                        "value": {
+                            "duration": 30,
+                            "summary": "File system checkout",
+                            "description": "Perform a listing of the DHPU file system and verify the initial directory structure.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "GCP 2.1.5 List Files",
+                                "Notes": "To be performed before SYS-DHPU-05"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-05",
+                        "value": {
+                            "duration": 50,
+                            "summary": "File uplink and downlink",
+                            "description": "To verify the correct uplink of a test file from ground to ASIM and to verify the correct downlink of a test file from ASIM to ground.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "E_GND_1251, E_GND_1252, E_GND_12201, E_GND_1250, GCP 2.1.6 Col MMU to DHPU File Transfer, GCP 2.1.7 DHPU to Col MMU File TransferGCP 2.1.5 List Files",
+                                "Notes": "The test file size is limited to a few bytes. The content of the file can be arbitrary.",
+                                "Support": "STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-06",
+                        "value": {
+                            "duration": 30,
+                            "summary": "Mode changes",
+                            "description": "To verify the DHPU can be commanded in the different functional modes: Configuration Mode, Operational Mode and Patching Mode",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "GCP 2.1.1 DHPU Mode Transitions",
+                                "Notes": "To be performed after SYS-DHPU-03"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-07",
+                        "value": {
+                            "duration": 120,
+                            "summary": "Retrieve the default monitoring attributes",
+                            "description": "List and verify the default monitored parameters and the warning and action limits",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "GCP 2.1.8 Get Monitoring Attributes",
+                                "Notes": "To be performed after SYS-DHPU-03",
+                                "Support": "Payload Developer (OHB-I)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-08",
+                        "value": {
+                            "duration": 120,
+                            "summary": "Downlink and verification of the DHPU TM log file",
+                            "description": "To verify the downlink process and content of the TM Log file",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "GCP 3.2 DHPU TM Log file downlink",
+                                "Notes": "This activity can be performed any time after SYS-DHPU-05. The TM Log is cyclic and contains at least 48 hours of the budgeted non-science data. The TM Log is stored in the DHPU file system and is only downlinked for troubleshooting and diagnostics.The TM log file has to be split before downlink, resulting in multiple files of max 7340032 bytes.",
+                                "Support": "STRATOS and Payload Developer (OHB-I)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-09",
+                        "value": {
+                            "duration": 360,
+                            "summary": "MMIA Decontamination Heaters functionality test",
+                            "description": "Verify the functioning of the MMIA decontamination heaters. Verify the thermal profile and investigate the time it takes to heat/cool the optical surfaces.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "MMIA is off; no PHOT Calibration scheduled within 60 minutes of the end of decontamination operation",
+                                "Module": "Commissioning: ASIM Subsystem Checkout - DHPU",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "GCP steps": "GCP 2.2.18 MMIA Decontamination Heaters",
+                                "Notes": "This activity can be performed any time after SYS-DHPU-02",
+                                "Support": "Payload Developer (OHB-I, TERMA)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-10",
+                        "value": {
+                            "duration": 15,
+                            "summary": "Upload of a simple command schedule",
+                            "description": "Upload a basic command schedule, for example to dump the memory content of both instruments. Verify a command schedule is loaded and correctly executed",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: DHPU Command Schedule Functionality",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:ON - configuration ",
+                                "GCP steps": "GCP 2.1.2 DHPU Schedule Management",
+                                "Notes": "This activity can be performed any time after SYS-DHPU-02",
+                                "Support": "STRATOS for file uplink"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-DHPU-11",
+                        "value": {
+                            "duration": 1440,
+                            "summary": "Automatic scheduler",
+                            "description": "Verify the automatic scheduler is behaving as expected and the instruments are correctly commanded",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "MMIA PHOTs are off during this test; at least one CHU to be activated. Test should run over SAA. Enable MMIA and MXGS Summary HK at a generation period of 1. Enable Ratemeter HK for MXGS at a generation period of 1. Enable Event Report 30000 and 30010. Disable internal and external triggering for both instruments",
+                                "Module": "Commissioning: DHPU Command Schedule Functionality",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - Operational, MMIA: ON - operational (data processing)",
+                                "GCP steps": "GCP 2.1.3 Sun Management, GCP 2.1.4 SAA Management",
+                                "Notes": "The SAA and SUN execution is set back to manual mode at the end of the test. The collected CZT Ratemeter data will be analysed to finetune the SAA boundaries.",
+                                "Support": "ASDC and MXGS IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MMIA-01",
+                        "value": {
+                            "duration": 10,
+                            "summary": "MMIA to DHPU interface check",
+                            "description": "To verify the power and data interface between the DHPU and the MMIA",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "MMIA DPU and SU temperatures within operational range",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MMIA",
+                                "Initial conditions": "DHPU ON: Operational, MXGS N/A, MMIA: Off",
+                                "GCP steps": "GCP 1.4 MMIA activation",
+                                "Notes": "First power on of the MMIA. The MXGS can be either OFF or ON. Is a prerequisite for SYS-MMIA-02"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MMIA-02",
+                        "value": {
+                            "duration": 30,
+                            "summary": "DPU functional test",
+                            "description": "To verify the basic functionality of the DPU",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Enable Instrument Summary HK packet at a generation period of 1, Enable Startup HK packet at a generation period of 0, Enable DPU HK packet at a generation period of 10",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MMIA",
+                                "Initial conditions": "DHPU ON: Operational, MXGS N/A, MMIA: ON - boot",
+                                "GCP steps": "GCP 1.6 MMIA checkout, GCP 2.2.14 MMIA HK management",
+                            "Notes": "The CHU and PHOT voltage supplies remain switched off",
+                            "Support": "IT, TERMA"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MMIA-03",
+                        "value": {
+                            "duration": 360,
+                            "summary": "Passive thermal control",
+                            "description": "Check the thermal profile of the DPU and the optical bench",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Enable Instrument Summary HK packet at a generation period of 1, Enable DPU HK packet at a generation period of 10",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MMIA",
+                                "Initial conditions": "DHPU ON: Operational, MXGS N/A, MMIA: ON - configuration",
+                                "GCP steps": "GCP 1.6 MMIA checkout",
+                                "Notes": "To be started after SYS-MMIA-02, The CHU and PHOT voltage supplies remain switched off",
+                                "Support": "IT, TERMA"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MMIA-04",
+                        "value": {
+                            "duration": 2880,
+                            "summary": "Daylight Sensor test",
+                            "description": "Verify the day/night monitoring by the Daylight Sensor",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Enable Instrument Summary HK packet at a generation period of 1. Enable DPU HK packet at a generation period of 1, Start the activity during eclipse conditions",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MMIA",
+                                "Initial conditions": "DHPU ON: Operational, MXGS N/A, MMIA: ON - configuration",
+                                "GCP steps": "GCP 1.6 MMIA checkout",
+                                "Notes": "It may be performed in the background, simultaneously with other checks, such as SYS-MMIA-03, SYS-MMIA-05, and SYS-MMIA-07. Prerequisite for SYS-MMIA-06",
+                                "Support": "IT, TERMA"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MMIA-05",
+                        "value": {
+                            "duration": 60,
+                            "summary": "Retrieve configuration tables and modify default Data Collection Buffer sizes",
+                            "description": "Dump the content of the configuration tables in SRAM and EEPROM and note down the initial values. Modify the EEPROM to contain the default tables.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MMIA",
+                                "Initial conditions": "DHPU ON: Operational, MXGS N/A, MMIA: ON - configuration",
+                                "GCP steps": "GCP 1.8 MMIA EEPROM Definition and GCP 2.2.11 MMIA Memory Dump",
+                                "Notes": "To be performed before any change is made to a configuration table. Change the size of the Data Collection Buffer partitions:- Priority 1 Data Buffer: from 500 to 550 Mbyte-  Priority 2 Data Buffer: from 150 to 300 Mbyte-  Priority 3 Data Buffer: from 100 to 125 Mbyte",
+                                "Support": "IT, TERMA, STRATOS (for the uplink of the configuration table binary files - TBD)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MMIA-06",
+                        "value": {
+                            "duration": 30,
+                            "summary": "Photometers functional test",
+                            "description": "Test the basic functionality of the three photometers during eclipse period. Verify the photometer data have the expected profile.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Eclipse period; no SAA; Calm conditions (no active thunderstorms, preferably performed over the oceans), Enable the Instrument Summary at a generation period of 1, Enable DPU HK at a generation period of 10, Enable PHOT HK packets at generation period of 10, To be performed after SYS-MMIA-05",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MMIA",
+                                "Initial conditions": "DHPU ON: Operational, MXGS N/A, MMIA: ON - configuration",
+                                "GCP steps": "GCP 2.1.3 Sun Management and GCP 2.2.8 MMIA PHOT Calibration",
+                                "Notes": "Offline calibration and analysis of the PHOTs might take a day, but the results are not needed to proceed with the following commissioning steps. They will serve as a baseline for future calibrations.",
+                                "Support": "ASDC and FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MMIA-07",
+                        "value": {
+                            "duration": 2,
+                            "summary": "Camera Head Unit functional test",
+                            "description": "Test the basic functionality of the two CHUs and verify the camera data have the expected profile.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Eclipse period; no SAA, Enable the Instrument Summary at a generation period of 1, Enable DPU HK at a generation period of 10, Enable CHU HK packets at generation period of 10",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MMIA",
+                                "Initial conditions": "DHPU ON: Operational, MXGS N/A, MMIA: ON - configuration",
+                                "GCP steps": "GCP 2.2.9 MMIA CHU Calibration",
+                                "Notes": "/",
+                                "Support": "ASDC and FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-01",
+                        "value": {
+                            "duration": 10,
+                            "summary": "MXGS to DHPU interface check",
+                            "description": "To verify the power and data interface between the DHPU and the MXGS",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS Off, MMIA: N/A",
+                                "GCP steps": "GCP 1.12 MXGS activation",
+                                "Notes": "First power on of the MXGS. First power on the MXGS DPU, then a few seconds later power on the MXGS PSU. The MMIA can be either OFF or ON. Is a prerequisite for SYS-MXGS-02"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-02",
+                        "value": {
+                            "duration": 30,
+                            "summary": "DPU and PSU functional test",
+                            "description": "To verify the basic functionality of the DPU and PSU",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Enable Instrument Summary HK at rate of 1Hz, Enable Startup HK at a generation period of 0, Enable DPU HK packet at generation period of 10, Enable PSU HK packet at generation period of 10",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - boot, MMIA: N/A",
+                                "GCP steps": "GCP 1.14 MXGS checkout and GCP 2.3.16 MXGS HK management",
+                                "Notes": "/",
+                                "Support": "IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-03",
+                        "value": {
+                            "duration": 30,
+                            "summary": "Retrieve configuration tables and modify default Data Collection Buffer sizes",
+                            "description": "Dump the content of the configuration tables in SRAM and EEPROM and note down the initial values.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "/",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - configuration, MMIA: N/A",
+                                "GCP steps": "GCP 2.3.10 MXGS Memory Dump",
+                                "Notes": "To be performed before any change is made to a configuration table. Change the size of the Data Collection Buffer partitions: Priority 1 Data Buffer: from 500 to 600 Mbyte- Priority 2 Data Buffer: from 150 to 200 Mbyte Priority 3 Data Buffer: from 100 to 175 Mbyte",
+                                "Support": "IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-04",
+                        "value": {
+                            "duration": 60,
+                            "summary": "CZT DAU health check",
+                            "description": "Check the health and basic functionality of each CZT DAU: DAU LV and HV can be switched on- PSU DC-DC Converters for this DAU are functional, with nominal voltage and current HK TM readings-  All readout chains in the DAU are functional (counts coming from all readout chains)- CZT DAU Summary and CZT DAU n Full HK values (for this DAU) are nominal (allowing for possible new noisy pixels).",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "To be started after SYS-MXGS-03.Requires low background conditions (no SAA). Enable Instrument Summary HK at a generation period of 1.Enable PSU HK packet at a generation period of 10.Enable CZT DAU Summary HK packet at a generation period of 1 .Enable CZT n DAU Full HK TM packet at generation period of 10 ( where n = 1, 2, 3 or 4 for the CZT DAU n being verified ) . Enable Event Report 40270.Verify the MXGS temperatures (available in DHPU H&S) are within operational range.Wait 15 minutes between the CZT DAU LV power on and the transition to operational mode.",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - configuration, MMIA: N/A",
+                                "GCP steps": "GCP 1.16 MXGS CZT-DAU Health Check and GCP 2.3.8 MXGS Transparent Configuration",
+                                "Notes": "MXGS in Transparent Configuration",
+                                "Support": "ASDC/FST and MXGS IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-05",
+                        "value": {
+                            "duration": 60,
+                            "summary": "BGO DAU health check",
+                            "description": "Check the health and basic functionality of each BGO DAU . DAU LV and HV can be switched on- PSU DC - DC Converters for this DAU are functional, with nominal voltage and current HK TM readings - All PMTs in the DAU are functional (counts coming from all PMTs) BGO DAU Summary and BGO DAU n Full HK values (for this DAU) are nominal.",               "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "To be started after SYS-MXGS-03.Cannot run in parallel with SYS-MXGS-04.Requires low background conditions (no SAA)  Enable Instrument Summary HK at a generation period of 1.Enable PSU HK packet at a generation period of 10. Enable BGO DAU Summary HK packet at a generation period of 1.Enable BGO n DAU Full HK TM packet at generation period of 10 ( where n = 1, 2, 3 or 4 for the BGO DAU n being verified ) .Verify the MXGS temperatures (available in DHPU H&S) are within operational range.Wait 15 minutes between the BGO DAU LV power on and the transition to operational mode.Enable Event Report 40270",                    "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - configuration, MMIA: N/A",
+                                "GCP steps": "GCP 1.17 MXGS BGO-DAU Health Check and GCP 2.3.8 MXGS Transparent Configuration",
+                                "Notes": "MXGS in Transparent Configuration",
+                                "Support": "ASDC/FST and MXGS IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-06",
+                        "value": {
+                            "duration": 1440,
+                            "summary": "MXGS in-orbit thermal balance test",
+                            "description": "To characterise the thermal behaviour of MXGS in orbit and to verify that all MXGS subsystems remain within operational temperature limits over a number of orbits.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Enable Instrument Summary HK at a generation period of 1. Enable DPU HK packet at a generation period of 60.Enable PSU HK packet at a generation period of 60.Enable CZT DAU Summary HK packet at a generation period of 60.Enable BGO DAU Summary HK packet at a generation period of 60",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - configuration, MMIA: N/A",
+                                "GCP steps": "GCP 1.18 MXGS Thermal Balance Test",
+                                "Notes": "To be started after completion of SYS-MXGS-04 and SYS-MXGS-05.CZT LV+HV and BGO LV are activated.Monitor CZT DAU Ratemeter values",
+                                "Support": "ASDC/FST and MXGS IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-07",
+                        "value": {
+                            "duration": 360,
+                            "summary": "CZT DAUs commissioning procedure",
+                            "description": "Disable noisy and hot pixels in XA-ASIC configuration tables; Reduce ASIC global thresholds from pre-launch values (if possible); update DAU HV settings in PSU configuration table (if needed)",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "To be started after SYS-MXGS-06.BGO HV should be off.Requires low background conditions (no SAA).Enable Instrument Summary HK at a generation period of 1.Enable CZT DAU Summary HK packet at a generation period of 1.Enable PSU HK packet at a generation period of 60.Enable Event Report 40270.Wait 15 minutes between the DAU power on and the transition to operational mode.",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - configuration, MMIA: N/A",
+                                "GCP steps": "GCP 1.19 MXGS DAU Commissioning Procedure, GCP 2.3.8 MXGS Transparent configuration, GCP 2.3.10 MXGS configuration update",
+                                "Notes": "MXGS in Transparent Configuration. Procedure might need 4 – 6 iterations; in between two data collections, a data collection for SYS-MXGS-08 could be performed giving that at least 1-2 iterations of updating ASIC Configuration Tables for CZT DAUs are completed before starting SYS-MXGS-08",
+                                "Support": "ASDC/FST and MXGS IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-MXGS-08",
+                        "value": {
+                            "duration": 360,
+                            "summary": "BGO DAUs commissioning procedure",
+                            "description": "Adjust the DAU HV settings in PSU configuration table; identify possible changes to the trigger thresholds in the DAU Control configuration table.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "To be started after SYS-MXGS-07.CZT Readout Chains could be disabled.Requires low background conditions (no SAA).Enable Instrument Summary HK at a generation period of 1.Enable BGO DAU Summary HK packet at a generation period of 1.Enable PSU HK packet at a generation period of 60.Enable Event Report 40270.Wait 15 minutes between the DAU power on and the transition to operational mode.",
+                                "Module": "Commissioning: ASIM Subsystem Checkout – MXGS",
+                                "Initial conditions": "DHPU ON: Operational, MXGS ON - configuration, MMIA: N/A",
+                                "GCP steps": "GCP 1.19 MXGS DAU Commissioning Procedure, GCP 2.3.8 MXGS Transparent configuration, GCP 2.3.10 MXGS configuration update, GCP 2.3.15 MXGS CZT DAU Readout Chain management",
+                                "Notes": "MXGS in Transparent Configuration.Procedure might need 4 – 6 iterations",
+                                "Support": "ASDC/FST and MXGS IT"
+                            }
+                        }
+                    },
+                    {
+                        "label": "ASIM-FEED1-ACT",
+                        "value": {
+                            "duration": 20,
+                            "summary": "ASIM FEEDER#1 ACTIVATION",
+                            "description": "ASIM FEEDER 1 ACTIVATION (OPERATIONAL POWER)",
+                            "categories": ["asim","operations", "Commissioning"],
+                            "metadata": {
+                                "Constraints" : "PPSB SDX_1 and SDX_2 switches to ON position. PDU1 Outlet 3 and PDU2 Outlet 3 activated. Verify temperatures are within operational range",
+                                "Module": "/",
+                                "Initial conditions": "ASIM Powered off",
+                                "GCP steps": "SODF 1.401 ASIM FEEDER 1 ACTIVATION",
+                                "Support": "Requires support from STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "ASIM-FEED2-ACT",
+                        "value": {
+                            "duration": 20,
+                            "summary": "ASIM FEEDER#2 ACTIVATION",
+                            "description": "ASIM FEEDER2 ACTIVATION (HEATER POWER)",
+                            "categories": ["asim","operations", "Commissioning"],
+                            "metadata": {
+                                "Constraints" : "PPSB SDX_1 and SDX_2 switches to ON position. PDU1 Outlet 3 and PDU2 Outlet 3 activated. Verify temperatures are within operational range",
+                                "Module": "/",
+                                "Initial conditions": "ASIM Powered off",
+                                "GCP steps": "SODF 1.403 ASIM FEEDER 2 (HEATER) ACTIVATION",
+                                "Support": "Requires support from STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "ASIM-FEED1-DEACT",
+                        "value": {
+                            "duration": 20,
+                            "summary": "ASIM FEEDER#1 DEACTIVATION",
+                            "description": "ASIM FEEDER#1 DEACTIVATION (OPERATIONAL)",
+                            "categories": ["asim","operations", "Commissioning"],
+                            "metadata": {
+                                "Constraints" : "",
+                                "Module": "/",
+                                "Initial conditions": "",
+                                "GCP steps": "SODF 1.402 ASIM FEEDER 1 DEACTIVATION",
+                                "Support": "Requires support from STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "ASIM-FEED2-DEACT",
+                        "value": {
+                            "duration": 20,
+                            "summary": "ASIM FEEDER#2 DEACTIVATION",
+                            "description": "ASIM FEEDER#2 DEACTIVATION (HEATER POWER)",
+                            "categories": ["asim","operations", "Commissioning"],
+                            "metadata": {
+                                "Constraints" : "",
+                                "Module": "/",
+                                "Initial conditions": "",
+                                "GCP steps": "SODF 1.404 ASIM FEEDER 2 (HEATER) DEACTIVATION",
+                                 "Support": "Requires support from STRATOS"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-XTRIG-01",
+                        "value": {
+                            "duration": 10,
+                            "summary": "Generate a cross trigger from MMIA to MXGS",
+                            "description": "Verify cross trigger signals can be sent and received by the instruments",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints:" : "Enable Instrument Summary HK at a generation period of 1. Enable MMIA Event Report 30160. Enable MXGS Event Report 40050. Perform after MMIA/MXGS subsystem checkout. Verify first the configuration parameters are set to allow cross trigger signals",
+                                "Module": "Commissioning: Instrument Cross Trigger Test",
+                                "Initial conditions": "DHPU ON - operational, MXGS ON - configuration, MMIA: ON - configuration",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – configuration, MXGS: ON – operational (TGF Search or High Background submode)",
+                                "GCP steps": "GCP 1.20 Instrument Cross-Trigger test",
+                                "Notes": "/",
+                                "Support": "ASDC"
+                            }
+                        }
+                    },
+                    {
+                        "label": "SYS-XTRIG-02",
+                        "value": {
+                            "duration": 10,
+                            "summary": "Generate a cross trigger from MXGS to MMIA",
+                            "description": "Verify cross trigger signals can be sent and received by the instruments",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Enable Instrument Summary HK at a generation period of 1,Enable MMIA Event Report 40010, Enable MXGS Event Report 30160, Perform after MMIA/MXGS subsystem checkout, Verify first the configuration parameters are set to allow cross trigger signals",
+                                "Module": "Commissioning: Instrument Cross Trigger Test",
+                                "Initial conditions": "DHPU ON - operational, MXGS ON - configuration, MMIA: ON - configuration",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – operational (data processing), MXGS: ON – configuration",
+                                "GCP steps": "GCP 1.20 Instrument Cross-Trigger test",
+                                "Notes": "/",
+                                "Support": "ASDC"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA-01",
+                        "value": {
+                            "duration": 60 ,
+                            "summary": "Triggered data collection during a thunderstorm",
+                            "description": "Verify the data collection when the MMIA is in triggered mode. Pay attention to: buffer sizes, data prioritization, completeness of the data set, functioning of the trigger and cropping algorithms",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Eclipse conditions; ISS passing over very active thunderstorm region, Enable Instrument Summary HK at a generation period of 1, Enable Buffer Resource HK packet at a generation period of 10, Enable Event Report 30090, 30070, 30130, 30140",
+                                "Module": "Commissioning: MMIA System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: N/A, MMIA: ON - operational (data processing)",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – operational (triggered data collection ==> data collection submode), MXGS: N/A",
+                                "GCP steps": "GCP 2.2.3 MMIA Operational Mode",
+                                "Notes": "SUN management is not active (TBC), All PHOTs and CHUs active, Activity will be repeated for 10 active thunderstorm regions.Use over-dimensioned cropping parameter for the first observation:CHU_CROP_OFFSET_ROW = 10. CHU_CROP_OFFSET_COLUMN = 10, Duration is 10x6 minutes +5 days data processing and downlink)",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA-02",
+                        "value": {
+                            "duration": 10 ,
+                            "summary": "Timed data collection",
+                            "description": "Verify the data collection when the MMIA is in timed mode. Pay attention to: buffer sizes, downlink time",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Eclipse conditions, Enable Instrument Summary HK at a generation period of 1, Enable Buffer Resource HK packet at a generation period of 10, Enable Event Report 30100, 30130, 30140",
+                                "Module": "Commissioning: MMIA System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: N/A, MMIA: ON - operational (data processing)",
+                                "Final system mode": "DHPU: ON - operational, MMIA: ON – operational (timed data collection) ==> data processing submode, MXGS: N/A",
+                                "GCP steps": "GCP 2.2.3 MMIA Operational Mode",
+                                "Notes": "To modify the buffer size, the MMIA needs to be rebooted.Perform the test with the “typical” setup for a timed observation.This step is not a prerequisite for any other step of the module.The data downlink could require considerable amount of time; reconfiguration of buffer sizes can only be done when data transmission is completed.Repeat test in and outside SAA.Duration 10 minutes + time for data processing and downlink",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA-03",
+                        "value": {
+                            "duration": 5 ,
+                            "summary": "Cropping algorithm check",
+                            "description": "Verify the performance of the cropping algorithm.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Eclipse conditions; active thunderstorm regions, Enable Instrument Summary HK at a generation period of 10",
+                                "Module": "Commissioning: MMIA System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: N/A, MMIA: ON - operational (data processing)",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – operational (triggered data collection), MXGS: N/A",
+                                "GCP steps": "GCP 2.2.13 MMIA Update of Science Algorithms",
+                                "Notes": "The PHOTs could be off during this test.Using data of MMIA-01Duration 5 minutes + time for data processing and downlink (data collected during MMIA-01",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA-04",
+                        "value": {
+                            "duration": 60 ,
+                            "summary": "Priority algorithm and trigger threshold check",
+                            "description": "Verify the performance of the cropping algorithm.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints:" : "Eclipse conditions; active thunderstorm regions. Enable Instrument Summary HK at a generation period of 10",
+                                "Module": "Commissioning: MMIA System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: N/A, MMIA: ON - operational (data processing)",
+                                "Final system mode": "DHPU: ON - operational, MMIA: ON – operational (triggered data collection), MXGS: N/A",
+                                "GCP steps": "GCP 2.2.13 MMIA Update of Science Algorithms",
+                                "Notes": "All PHOTs and CHUs activeDuration 60 minutes + time for data processing and downlink (data collected during MMIA-01",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA-05",
+                        "value": {
+                            "duration": 0.1 ,
+                            "summary": "CHU initial in-orbit calibration",
+                            "description": "To adjust the CHU configuration tables so that the science performance of the two cameras is optimized with respect to: energy range, determination and resolution, and sensitivity",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Eclipse conditions; No SAA. Enable Instrument Summary HK at a generation period of 10. To be performed for the first time before MMIA-01",
+                                "Module": "Commissioning: MMIA System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: N/A, MMIA: ON - operational (data processing)",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – operational (timed data collection), MXGS: N/A",
+                                "GCP steps": "GCP 2.2.9 MMIA CHU calibration",
+                                "Notes": "Image compression is deactivated. PHOTs could be off during this test. Duration 2x3s of timed observation + time for data downlink and processing",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MMIA-06",
+                        "value": {
+                            "duration": 10 ,
+                            "summary": "PHOT in-orbit calibration",
+                            "description": "To obtain photometer response curves and their variation over time, for calibration purposes",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "Eclipse conditions; no SAA; Calm conditions (no active thunderstorms, preferably performed over the oceans). Enable Instrument Summary HK at a generation period of 10. To be performed for the first time before MMIA-01",
+                                "Module": "Commissioning: MMIA System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: N/A, MMIA: ON - operational (data processing)",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – operational (timed data collection), MXGS: N/A",
+                                "GCP steps": "GCP 2.2.8 MMIA PHOT calibration",
+                                "Notes": "Repeat every 24h, at the start of ISS night.Can start after completion of the MMIA subsystem checkout.CHUs could be off during this test.For the duration time for data processing and downlink should be taken into account",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MXGS-01",
+                        "value": {
+                            "duration": 360 ,
+                            "summary": "System level initial test",
+                            "description": "To test the nominal observing mode that generates TGF Event observations. From this data detector background count rates can be found and also the false event trigger rate can be estimated.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "ISS in low background (no SAA). Enable Instrument Summary HK at a generation period of 1. Enable Ratemeter HK at a generation period of 1. Enable CZT DAU Summary HK at a generation period of 10. Enable BGO DAU Summary HK at a generation period of 10. Enable event reports 40270, 30000, 30010",
+                                "Module": "Commissioning: MXGS System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: ON - configuration, MMIA: N/A",
+                                "Final system mode": "DHPU: ON – operational, MMIA: N/A, MXGS: ON – operational (TGF search mode)",
+                                "GCP steps": "GCP 2.2.8 MMIA PHOT calibration",
+                                "Notes": "Can only start after completion of MXGS checkout. All DAUs are functional and the DAU Control configuration tables have been updated.Duration: 6 hours + 1 day of data processing",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MXGS-02",
+                        "value": {
+                            "duration": 5760 ,
+                            "summary": "Extended observations and trigger threshold adjustments",
+                            "description": "To optimize the MXGS trigger thresholds tabulated for a range of background levels, once in-orbit background rates and false trigger rates have been determined",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints" : "ISS initially in low background (no SAA).Enable Instrument Summary HK at a generation period of 1.Enable Buffer Resources HK at a generation period of 60.Enable Ratemeter HK at a generation period of 1.Enable CZT DAU Summary HK at a generation period of 60.Enable BGO DAU Summary HK at a generation period of 60.Can be combined with SYS-DHPU-11. MMIA tests can be scheduled in parallel",
+                                "Module": "Commissioning: MXGS System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: ON - configuration, MMIA: N/A",
+                                "Final system mode": "DHPU: ON – operational, MMIA: N/A, MXGS: ON – operational (TGF search mode)",
+                                "GCP steps": "GCP 2.3.6 MXGS triggered observation.GCP 2.3.10 MXGS configuration update",
+                                "Notes": "To be performed after MXGS-01.Enable automatic commanding for MXGS (SAA management).Verify Automatic Threshold Adjustment is enabled.Verify Autonomous Submode Transition is enabled.Duration: 4x24 hours + time for data processing (4x2days)",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MXGS-03",
+                        "value": {
+                            "duration": 1440 ,
+                            "summary": "LED-HED Coincidence Test",
+                            "description": "To exercise the coincidence trigger mode wherein LED and HED both produced triggers within nominally 20ms to generate an instrument-level TGF Trigger Event.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints:" : "ISS initially in low background (no SAA).Enable Instrument Summary HK at a generation period of 1.Enable Buffer Resources HK at a generation period of 60.Enable Ratemeter HK at a generation period of 1.Enable CZT DAU Summary HK at a generation period of 60.Enable BGO DAU Summary HK at a generation period of 60",
+                                "Module": "Commissioning: MXGS System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: ON - configuration, MMIA: N/A",
+                                "Final system mode": "DHPU: ON - operational, MMIA: N/A, MXGS: ON – operational (TGF search mode)",
+                                "GCP steps": "GCP 2.3.16 MXGS HED-LED coincident TGF search",
+                                "Notes": "To be performed after MXGS-02. Enable automatic commanding for MXGS (SAA management).Duration: 24 hours + time for data processing (2 days)",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MXGS-04",
+                        "value": {
+                            "duration": 60 ,
+                            "summary": "Timed data collection (Auroral Capture Mode)",
+                            "description": "Collect and downlink 600 seconds of science data with the instrument in Auroral Capture Mode.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints:" : "ISS in low background (no SAA).Enable Instrument Summary HK at a generation period of 1.Enable Buffer Resources HK at a generation period of 60.Enable Ratemeter HK at a generation period of 1.Enable CZT DAU Summary HK at a generation period of 60.Enable BGO DAU Summary HK at a generation period of 60",
+                                "Module": "Commissioning: MXGS System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: ON - configuration, MMIA: N/A",
+                                "Final system mode": "DHPU: ON - operational, MMIA: N/A, MXGS: ON – operational (auroral capture submode)",
+                                "GCP steps": "GCP 2.3.7 MXGS Auroral Capture Mode",
+                                "Notes": "depending on background it may be necessary to update configuration parameter for Auroral Submode Threshold so that Auroral Capture submode is entered.Duration: 1 hour + time for data processing (12h)",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "MXGS-05",
+                        "value": {
+                            "duration": 2880 ,
+                            "summary": "MXGS initial in-orbit detector calibration",
+                            "description": "To calibrate the individual CZT pixels of the LED detector plane and locate noisy pixels to be disabled, using Cd-109 source lines.",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints:" : "ISS in low background (no SAA).Enable Instrument Summary HK at a generation period of 1.Enable Buffer Resources HK at a generation period of 60.Enable Ratemeter HK at a generation period of 1.Enable CZT DAU Summary HK at a generation period of 60.Enable BGO DAU Summary HK at a generation period of 60",
+                                "Module": "Commissioning: MXGS System Level Functional checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: ON - configuration, MMIA: N/A",
+                                "Final system mode": "DHPU: ON – operational, MMIA: N/A, MXGS: ON – operational",
+                                "GCP steps": "GCP 2.3.9 MXGS CZT calibration",
+                                "Notes": "MXGS in transparent configuration.HED HV off.Read out chains for non-active LED DAUs are disabled.12h of data outside SAA; not necessarily in consecutive orbits.Duration: 4x12hours + time for data processing",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "ASIM-01",
+                        "value": {
+                            "duration": 1440,
+                            "summary": "Instrument schedule",
+                            "description": "Verify the correct performance of the MMIA and MXGS scheduler, including SUN and SAA management",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints:" : "Enable Instrument Summary HK at a generation period of 1",
+                                "Module": "Commissioning: Full Facility Functionality Checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: ON - Operational, MMIA: ON - Operational",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – operational, MXGS: ON – operational",
+                                "GCP steps": "GCP 2.1.2 DHPU schedule management",
+                                "Notes": "Typical MMIA and MXGS science schedule.Duration: 24 hours + time for data processing and analysis",
+                                "Support": "STRATOS (for file uplink), ASDC (optional)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "ASIM-02",
+                        "value": {
+                            "duration": 1440,
+                            "summary": "Instrument to instrument cross triggering",
+                            "description": "Verify the performance of the cross-triggering mechanism",
+                            "categories": ["asim","commissioning"],
+                            "metadata": {
+                                "Constraints:" : "Initially ISS eclipse and low background; active orbit.Enable Instrument Summary HK at a generation period of 1.Enable MMIA Event Report 30160, 40010.Enable MXGS Event Report 30160, 40050",
+                                "Module": "Commissioning: Full Facility Functionality Checks",
+                                "Initial conditions": "DHPU ON - operational, MXGS: ON - Operational, MMIA: ON - Operational (data collection)",
+                                "Final system mode": "DHPU: ON – operational, MMIA: ON – operational (triggered data collection), MXGS: ON – operational (TGF search submode)",
+                                "GCP steps": "GCP 2.3.12 MXGS Internal and Cross-Triggering Management.GCP 2.2.14 MMIA Internal and Cross-Triggering Management",
+                                "Notes": "Automatic zone management is enabled during this tesT. Can be performed in parallel with ASIM-01",
+                                "Support": "ASDC/FST"
+                            }
+                        }
+                    },
+                    {
+                        "label": "DHPU REBOOT",
+                        "value": {
+                            "duration": 10,
+                            "summary": "DHPU Reboot ",
+                            "description": "Perform a reboot by TC and verify the DHPU boots correctly.",
+                            "categories": ["asim","operations"],
+                            "metadata": {
+                                "Constraints:" : "/",
+                                "Module": "Operations: ASIM Reboot",
+                                "Initial conditions": "DHPU ON: Operational, MXGS/MMIA:OFF ",
+                                "Final system mode": "DHPU ON: Operational, MXGS/MMIA:OFF",
+                                "GCP steps": "GCP 4.1 DHPU Reboot",
+                                "Notes": "STRATOS support required to stop the R/T acquisition before sending the reboot command and starting R/T acquisition when reboot is finished",
+                                "Support": "STRATOS (stop/start R/T acquisition)"
+                            }
+                        }
+                    },
+                    {
+                        "label": "ASIM GRACEFUL SHUTDOWN",
+                        "value": {
+                            "duration": 60,
+                            "summary": "Graceful shutdown",
+                            "description": "To verify the ability to perform a graceful shutdown of the payload.",
+                            "categories": ["asim", "operations"],
+                            "metadata": {
+                                "Constraints:" : "At the end of this test ASIM will be off. STRATOS support is needed to re-activate ASIM",
+                                "Module": "operations",
+                                "Initial conditions": "DHPU: on – operational, MMIA: OFF, MXGS: OFF ",
+                                "Final system mode": "DHPU: OFF, MMIA: OFF, MXGS: OFF",
+                                "GCP steps": "E_JSP_2104 Step 2, E_JSP_1402, E_JSP_1401, GCP 1.2 DHPU deactivation",
+                                "Notes": "STRATOS to stop R/T acquisition before sending the graceful shutdown command.",
+                                "Support": "STRATOS"
+                            }
+                        }
+                    }
+                ],
+                "activitySequences": [
+                    {
+                        "label": "ASIM Activation",
+                        "value": {
+                            "description": "ASIM activation sequence",
+                            "categories": ["asim", "commissioning"],
+                            "sequence": [
+                                {
+                                    "offset": 0,
+                                    "template": "ASIM-FEED1-ACT"
+                                },
+                                {
+                                    "offset": 20,
+                                    "template": "ASIM-FEED2-ACT"
+                                },
+                                {
+                                    "offset": 40,
+                                    "template": "SYS-DHPU-01"
+                                }
+                            ]                
+                        }
+                    }
+                ]
+            }
+        ],
+        "wikiLinkInternal" : "http://gsinfo.busoc.be/redmine/projects/infra-sofu/wiki",
+        "wikiLinkExternal" : ""
+    },
+    "status" : [
+        {"label": "tentative", "value": "tentative"},
+        { "label": "scheduled", "value": "scheduled" },
+        { "label": "on going", "value": "on going" },
+        { "label": "completed", "value": "completed" },
+        { "label": "canceled", "value": "canceled" }
+    ],
+    "priorities" : [
+        {"label": "low", "value": "low"},
+        { "label": "normal", "value": "normal" },
+        { "label": "high", "value": "high" },
+        { "label": "urgent", "value": "urgent" }
+    ],
+    "YamcsInstances" : [
+        {"label": "fsl-ops", "value": "fsl-ops"},
+        { "label": "fsl-em", "value": "fsl-em" },
+        { "label": "fsl-em-dev", "value": "fsl-em-dev" },
+        { "label": "fsl-em-rubi", "value": "fsl-em-rubi" },
+        { "label": "fsl-sim", "value": "fsl-sim" },
+        { "label": "asim-gm", "value": "asim-gm" },
+        { "label": "asim-fm", "value": "asim-fm" },
+        { "label": "solar-fm", "value": "solar-fm" }
+    ],
+    "TimelineBands" : [
+        {
+            "label": "Timescale - UTC",
+            "value": {
+                "label": "UTC",
+                "description": "Display UTC time",
+                "type": "Timescale",
+                "interactive": false,
+                "tz": "UTC"
+            }
+        },
+        {
+            "label": "Timescale - Local",
+            "value": {
+                "label": "Local",
+                "description": "Display local time",
+                "type": "Timescale",
+                "interactive": false
+            }
+        }, 
+        {
+            "label": "Spacer band",
+            "value": {
+                "label": "Spacer",
+                "description": "Invisible spacer band to seperate bands vertically",
+                "type": "SpacerBand",
+                "interactive": false
+            }
+        }, 
+        {
+            "label": "OPTIMIS - TDRS",
+            "value": {
+                "label": "TDRS",
+                "description": "Comms data, coming from OPTIMIS",
+                "type": "CommsBand",
+                "interactive": true,
+                "what": "TDRS",
+                "bands": [
+                    {
+                        "type": "Ku",
+                        "color": "#ffa500"
+                    },
+                    {
+                        "type": "S",
+                        "color": "#159d02"
+                    }
+                ],
+                "events": [],
+                "visibleZoomLevel": 8,
+                "interactiveSidebar": true
+            }
+        },  
+        {
+            "label": "OPTIMIS - Day/Night",
+            "value": {
+                "label": "Day / Night",
+                "description": "Day/Night data from OPTIMIS",
+                "type": "DayNightBand",
+                "interactive": true,
+                "what": "Day/Night",
+                "events": [],
+                "visibleZoomLevel": 8,
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "ASIM - Day/Night",
+            "value": {
+                "label": "Day / Night",
+                "description": "Day/Night data calculated for ASIM",
+                "type": "DayNightBand",
+                "interactive": true,
+                "what": "ASIMDayNight",
+                "events": [],
+                "visibleZoomLevel": 8,
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "ASIM - SAA",
+            "value": {
+                "label": "ASIM SAA",
+                "description": "ISS South Atlantic Anomaly from ASIM calculated data",
+                "type": "SaaBand",
+                "interactive": true,
+                "what": "ASIMSAA",
+                "visibleZoomLevel": 8,
+                "events": [],
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "ASIM - MMIA submode (planned)",
+            "value": {
+                "label": "MMIA submode (Planned)",
+                "description": "MMIA submode planning band.",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MMIA submode planned",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "visibleZoomLevel": 8,
+                "leakEventBackground": false,
+                "interactiveSidebar": true
+            }
+        },  
+        {
+            "label": "ASIM - MMIA submode (as run)",
+            "value": {
+                "label": "MMIA submode (as run)",
+                "description": "Display the MMIA submode from Yamcs archive taking into account TM item: MM_SUM_SW_Submode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MMIA submode as run",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - MMIA mode (as run)",
+            "value": {
+                "label": "MMIA mode (as run)",
+                "description": "Display the MMIA mode from Yamcs archive taking into account TM item: ASIM_Meas_PB3A_28V_3_STS_HK, ",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MMIA mode as run",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - MXGS submode (planned)",
+            "value": {
+                "label": "MXGS submode (Planned)",
+                "description": "MXGS submode planning band, based on the OPTIMIS SAA band",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MXGS submode planned",
+                "events": [],
+                "leakEventBackground": false,
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "ASIM - MXGS submodes",
+            "value": {
+                "label": "MXGS submodes",
+                "description": "Display the MXGS submodes from Yamcs archive taking into account TM item: MX_SUM_SW_Submode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MXGS submodes",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - MMIA submodes",
+            "value": {
+                "label": "MMIA submodes",
+                "description": "Display the MMIA submodes from Yamcs archive taking into account TM item: MM_SUM_SW_Submode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MMIA submodes",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - MMIA modes",
+            "value": {
+                "label": "MMIA modes",
+                "description": "Display the MMIA modes from Yamcs archive taking into account TM item: MM_SUM_SW_Mode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MMIA modes",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - MXGS submode (as run)",
+            "value": {
+                "label": "MXGS submode (as run)",
+                "description": "Display the MXGS submode from Yamcs archive taking into account TM item: MX_SUM_SW_Submode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MXGS submode as run",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - MXGS mode (as run)",
+            "value": {
+                "label": "MXGS mode (as run)",
+                "description": "Display the MXGS mode from Yamcs archive taking into account TM item: MX_SUM_SW_Mode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MXGS mode as run",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - MXGS modes",
+            "value": {
+                "label": "MXGS modes",
+                "description": "Display the MXGS modes from Yamcs archive taking into account TM item: MX_SUM_SW_Mode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "MXGS modes",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - DHPU mode (as run)",
+            "value": {
+                "label": "DHPU mode (as run)",
+                "description": "Display the DHPU mode from Yamcs archive taking into account TM item: ASIM_Meas_DHPU_STATE_HK",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "DHPU mode as run",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "OPTIMIS - ISS Attitude",
+            "value": {
+                "label": "Attitude",
+                "description": "ISS Attitude from OPTIMIS",
+                "type": "AttitudeBand",
+                "interactive": true,
+                "what": "Attitude",
+                "events": []
+            }
+        },
+        {
+            "label": "OPTIMIS - SAA",
+            "value": {
+                "label": "SAA",
+                "description": "ISS South Atlantic Anomaly from OPTIMIS data",
+                "type": "SaaBand",
+                "interactive": true,
+                "what": "SAA",
+                "visibleZoomLevel": 8,
+                "events": [],
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - COL RESOURCE",
+            "value": {
+                "label": "COL RESOURCE",
+                "description": "COL RESOURCE band from OPTIMIS",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "OPTIMIS CR",
+                "events": [],
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - JSL-2",
+            "value": {
+                "label": "JSL-2",
+                "description": "JSL-2 band from OPTIMIS",
+                "type": "EventBand",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactive": true,
+                "what": "OPTIMIS JSL-2",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - VIDEO CHANNELS",
+            "value": {
+                "label": "VIDEO CHANNELS",
+                "description": "VIDEO CHANNELS band from OPTIMIS",
+                "type": "EventBand",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactive": true,
+                "what": "OPTIMIS VC",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - COL",
+            "value": {
+                "label": "COL",
+                "description": "COL band from OPTIMIS",
+                "type": "EventBand",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactive": true,
+                "what": "OPTIMIS COL",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        }, 
+        {
+            "label": "OPTIMIS - KU-BD",
+            "value": {
+                "label": "KU-BD",
+                "description": "KU-BD band from OPTIMIS",
+                "type": "EventBand",
+                "interactive": true,
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "what": "OPTIMIS KU-BD",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        }, 
+        {
+            "label": "OPTIMIS - MCC COORD",
+            "value": {
+                "label": "MCC COORD",
+                "description": "MCC COORD band from OPTIMIS",
+                "type": "EventBand",
+                "interactive": true,
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "what": "OPTIMIS MC",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        }, 
+        {
+            "label": "Increment timing",
+            "value": {
+                "label": "Increment timing",
+                "description": "Display increment-xmonths and increment+weeks based on the increment start date and end date.",
+                "type": "OrbitNumberBand",
+                "interactive": false,
+                "what": "Increment timing",
+                "events": [],
+                "hatchUncovered": false,
+                "incrementStartDate": "",
+                "incrementEndDate": ""
+            }
+        },
+        {
+            "label": "Tagged events",
+            "value": {
+                "label": "Tagged events",
+                "description": "Display custom events based on their tags.",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "Tagged events",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "filterCategories": [],
+                "leakEventBackground": false,
+                "showExecutedTimes": false,
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "Google Calendar",
+            "value": {
+                "label": "BUSOC Google Calendar",
+                "description": "BUSOC Google calendar. Readonly.",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "google calendar",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "interactiveSidebar": false,
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "Yamcs - Events",
+            "value": {
+                "label": "Yamcs events",
+                "description": "Display Yamcs events",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "Yamcs events",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "Yamcs - Command history",
+            "value": {
+                "label": "Yamcs command history",
+                "description": "Display command history (sent with yamcs only)",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "Yamcs command history",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "ASIM - ASIM_Meas_SAAStatus_HK",
+            "value": {
+                "label": "ASIM_Meas_SAAStatus_HK",
+                "description": "Display Yamcs achrived Telemetry for TM ASIM_Meas_SAAStatus_HK displayed as SAA band type of data.",
+                "type": "SaaBand",
+                "interactive": true,
+                "what": "ASIM_Meas_SAAStatus_HK",
+                "events": [],
+                "yamcsInstance": "",
+                "yamcsParameter": ""
+            }
+        },
+        {
+            "label": "ASIM - ASIM_Meas_SUNStatus_HK",
+            "value": {
+                "label": "ASIM_Meas_SUNStatus_HK",
+                "description": "Display Yamcs achrived Telemetry for TM ASIM_Meas_SUNStatus_HK displayed as Day/Night band type of data.",
+                "type": "DayNightBand",
+                "interactive": true,
+                "what": "ASIM_Meas_SUNStatus_HK",
+                "events": [],
+                "yamcsInstance": "",
+                "yamcsParameter": ""
+            }
+        },
+        {
+            "label": "Yamcs - Archived Telemetry",
+            "value": {
+                "label": "Yamcs archived telemetry",
+                "description": "Display Yamcs achrived Telemetry",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "Yamcs archived telemetry",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "yamcsInstance": "",
+                "yamcsParameter": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "FSL - Mode",
+            "value": {
+                "label": "FSL - Mode",
+                "description": "Display the FSL Mode from Yamcs archive taking into account TM item: FSL_Op_Mode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "FSL Mode",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "FSL - VMU Rec. Mode",
+            "value": {
+                "label": "FSL - VMU Rec. Mode",
+                "description": "Display the FSL VMU Recorder Mode from Yamcs archive taking into account TM item: FSL_VMU_Recorder_Op_Mode",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "VMU REC Mode",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "FSL - HRDL",
+            "value": {
+                "label": "FSL - HRDL",
+                "description": "Display the FSL HRDL from Yamcs archive taking into account TM item: FSL_VMU_HRDL_OPER_STATE, FSL_VMU_HRDL_RATE_MSB,FSL_VMU_HRDL_RATE_LSB",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "FSL HRDL",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "FSL - VMU Recordings",
+            "value": {
+                "label": "FSL - REC",
+                "description": "Display the FSL VMU recordings memory usage from Yamcs archive taking into account TM item: FSL_VMU_Recorder_OpState, FSL_VMU_Rec_Mem_Free_LSW,FSL_VMU_Rec_Mem_Free_MSB",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "FSL VMU REC",
+                "events": [],
+                "yamcsInstance": "",
+                "leakEventBackground": false
+            }
+        },
+        {
+            "label": "B.USOC Shiftplanner - CORS issue!",
+            "value": {
+                "label": "B.USOC Shiftplanner",
+                "description": "Display B.USOC Shiftplanner.",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "Shiftplanner",
+                "events": [],
+                "leakEventBackground": false
+            }
+        } 
+    ],
+    "defaultTimelines" : [
+        {
+            "label": "myTimeline1",
+            "value": {
+                "index": 0,
+                "name": "myTimeline1",
+                "bands": []
+            }
+        },
+        {
+            "label": "myTimeline2",
+            "value": {
+                "index": 1,
+                "name": "myTimeline2",
+                "bands": []
+            }
+        },
+        {
+            "label": "myTimeline3",
+            "value": {
+                "index": 2,
+                "name": "myTimeline3",
+                "bands": []
+            }
+        },
+        {
+            "label": "myTimeline4",
+            "value": {
+                "index": 3,
+                "name": "myTimeline4",
+                "bands": []
+            }
+        }
+    ]
+}

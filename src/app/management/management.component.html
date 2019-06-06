@@ -1,0 +1,76 @@
+
+<div style="height: 52px;">
+</div>
+ 
+<!-- contextmenu -->
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+
+<!--categories table-->
+<div>
+<p-dataTable [value]="categories" [(selection)]="selectedCategory" [contextMenu]="cm" selectionMode="single" [responsive]="true">
+    <p-header> Categories  </p-header>
+    <p-column field="name" header="Name" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+    <p-column field="summary" header="Summary"></p-column>
+    <p-column field="lastmod" header="Lastmodified" [sortable]="true">
+        <ng-template let-category="rowData" pTemplate="body">
+            <span>{{ category.lastmod | date:'dd-MM-yyyy HH:mm':'+0000' }} ({{ category.user }}) </span>
+        </ng-template>
+    </p-column>
+    <p-footer><div class="ui-helper-clearfix" style="width:100%"><button class="btn btn-default" (click)="showDialogToAdd()" style="float:left"><span class="glyphicon glyphicon-plus"></span>Add</button></div></p-footer>
+</p-dataTable>
+</div>
+
+<!--slots table-->
+<div>
+<p-dataTable [value]="slots" [(selection)]="selectedSlot" selectionMode="single" [responsive]="true">
+    <p-header> Slots  </p-header>
+    <p-column field="category" header="Payload" [style]="{'width':'120px'}" [sortable]="true"></p-column>
+    <p-column field="name" header="Slotname" [style]="{'width':'120px'}"></p-column>
+    <p-column field="uid" header="SID" [style]="{'width':'120px'}" [sortable]="true"></p-column>
+    <p-column field="file" header="Current file">
+        <ng-template let-item="rowData" pTemplate="body">
+            <span *ngIf="item.status === 'scheduled'" >{{item.file }} (scheduled) </span>
+            <span *ngIf="item.status === 'completed'" >{{item.file}} </span>
+        </ng-template>
+    </p-column>
+    <p-column field="lastmod" header="Lastmodified" [sortable]="true">
+        <ng-template let-slot="rowData" pTemplate="body">
+            <span>{{ slot.lastmod | date:'dd-MM-yyyy HH:mm':'+0000' }} ({{ slot.user }}) </span>
+        </ng-template>
+    </p-column>
+    <!--<p-footer><div class="ui-helper-clearfix" style="width:100%"><button class="btn btn-default" (click)="showDialogToAdd()" style="float:left"><span class="glyphicon glyphicon-plus"></span>Add</button></div></p-footer>-->
+</p-dataTable>
+</div>
+
+<!--dialog window-->
+<p-dialog header="Category details" width="400" [(visible)]="displayDetailDialog" [responsive]="true" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="category">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="name">Name</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="category.name" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="summary">Summary</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="summary" [(ngModel)]="category.summary" /></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button class="btn btn-default" (click)="save()">Save</button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!--p-dialog header="Event History" width="600" [(visible)]="displayHistoryDialog" [responsive]="true" showEffect="fade" [modal]="true">
+    <p-dataTable [value]="eventHistory" [(selection)]="selectedPastEvent" selectionMode="single" [responsive]="true">
+        <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" sortable="true"></p-column>
+        <footer><div class="ui-helper-clearfix" style="width:100%"><button class="btn btn-default" (click)="revertEvent()">Revert</button></div></footer>
+    </p-dataTable>
+</p-dialog>
+
+
+<p-dataTable [value]="files" [(selection)]="selectedFile" selectionMode="single" [paginator]="true" rows="15" [responsive]="true">
+    <header> Files </header>
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"></p-column>
+    <footer><div class="ui-helper-clearfix" style="width:100%"><input type="file" (change)="addFile($event)" /></div><button type="button" (click)="uploadFile()">Upload</button></footer>
+</p-dataTable>-->

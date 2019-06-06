@@ -1,0 +1,54 @@
+<div style="height: 52px;">
+</div>
+
+<table id="TLROverview" border="1">
+    <thead align="center">
+        <tr align="center">
+            <th></th>
+            <th></th>
+            <th *ngFor="let reviewdate of TLRData">
+                {{ reviewdate.start | DOY }}
+            </th>         
+        </tr>
+        <tr>
+            <th>
+                Activity
+            </th>
+            <th>
+                OPTIMIS band
+            </th>
+            <th *ngFor="let reviewdate of TLRData">
+                {{ reviewdate.start | DOY }}/06:00-{{ reviewdate.end | DOY }}/06:00
+            </th>            
+        </tr>
+
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+               ASIM-GND-CMD 
+            </td>
+            <td>
+                COL
+            </td>
+            <td *ngFor="let review of TLRData">
+                {{ review["ASIM-GND-CMD"].dtstart | DOY }}/06:00-{{ review["ASIM-GND-CMD"].dtend | DOY }}/06:00
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DMS-ASIM FILE-U/XFER
+            </td>
+            <td>
+                COL
+            </td>
+            <td *ngFor="let review of TLRData">
+                {{ review["DMS-ASIM FILE-U/XFER"].dtstart | DOY }}/{{ review["DMS-ASIM FILE-U/XFER"].dtstart | date:'HH:mm'}}-{{ review["DMS-ASIM FILE-U/XFER"].dtend | DOY }}/{{ review["DMS-ASIM FILE-U/XFER"].dtend | date:'HH:mm'}}
+            </td>
+        </tr>
+      
+
+    </tbody>
+
+    
+</table>

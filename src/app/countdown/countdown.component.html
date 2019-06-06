@@ -1,0 +1,61 @@
+<p-panel header="TDRS" [toggleable]="true" [style]="{'margin-bottom':'10px'}">
+    <h1 *ngIf="kuCountdown">
+        <font color="green" *ngIf="kuCountdown.includes('LOS')"> KU band AOS </font>
+        <font color="red" *ngIf="kuCountdown.includes('AOS')">KU band LOS </font>
+        <font color="red" *ngIf="kuCountdown === 'error'">No Comms data available </font>       
+    </h1>
+    <h3 *ngIf="kuCountdown">
+        <font color="green" *ngIf="kuCountdown.includes('LOS')">{{ kuCountdown }}</font>
+        <font color="red" *ngIf="kuCountdown.includes('AOS')">{{ kuCountdown }}</font>
+    </h3>
+    <br>
+    <h1 *ngIf="sCountdown">
+        <font color="green" *ngIf="sCountdown.includes('LOS')"> S band AOS </font>
+        <font color="red" *ngIf="sCountdown.includes('AOS')">S band LOS </font>       
+    </h1>
+    <h3 *ngIf="sCountdown">
+        <font color="green" *ngIf="sCountdown.includes('LOS')">{{ sCountdown }}</font>
+        <font color="red" *ngIf="sCountdown.includes('AOS')">{{ sCountdown }}</font>
+    </h3>
+</p-panel>
+
+<p-panel header="SAA" [toggleable]="true" [style]="{'margin-bottom':'10px'}">
+        <h3 *ngIf="saaCountdown">
+        <font color="black" *ngIf="saaCountdown.includes('ENTRY')">{{ saaCountdown }}</font>
+        <font color="red" *ngIf="saaCountdown.includes('EXIT')">{{ saaCountdown }}</font>
+        <font color="red" *ngIf="saaCountdown === 'error'">No data available </font>  
+    </h3>
+    <br>
+</p-panel>
+
+<p-panel header="DAY/NIGHT" [toggleable]="true" [style]="{'margin-bottom':'10px'}">
+        <h3 *ngIf="daynightCountdown">
+        <font color="black" *ngIf="daynightCountdown.includes('DAY')">{{ daynightCountdown }}</font>
+        <font color="black" *ngIf="daynightCountdown.includes('NIGHT')">{{ daynightCountdown }}</font>
+        <font color="red" *ngIf="daynightCountdown === 'error'">No data available </font>  
+    </h3>
+    <br>
+</p-panel>
+
+<p-panel *ngIf="!selectedEvent" header="Custom event" [toggleable]="true" [style]="{'margin-bottom':'10px'}">
+    <p-dropdown name="upcomingevents" placeholder="Select an event" filter="true" [options]="upcomingEvents" [(ngModel)]="selectedEvent" (onChange)="calculateEventCountdown()"></p-dropdown>
+</p-panel>
+<p-panel *ngIf="selectedEvent" header="{{selectedEvent.summary}}" [toggleable]="true" [style]="{'margin-bottom':'10px'}">
+    <p-checkbox name="eventalert" binary="true" label="Alert sound 2 minutes before the start" [(ngModel)]="eventAlert" ></p-checkbox>
+    <!-- (onChange)="checkAlerts()" -->
+    <br>
+    <p-checkbox name="eventend" binary="true" label="Use end of activity" [(ngModel)]="useEventEnd"></p-checkbox>
+    <br>
+    <p-dropdown name="upcomingevents" placeholder="Select an event" filter="true" [options]="upcomingEvents" [(ngModel)]="selectedEvent" (onChange)="calculateEventCountdown()"></p-dropdown>
+    <h3 *ngIf="daynightCountdown">
+        <font color="black" *ngIf="difference > 0">{{ eventCountdown }}</font>
+        <font color="red" *ngIf="difference < 0">Overdue {{ difference }} seconds</font>
+    </h3>
+    <br>
+    <audio id="alert" preload="auto" autobuffer loop="true"> 
+        <source src="assets/RedAlert.wav" />
+    </audio>
+</p-panel>
+
+
+

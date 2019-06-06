@@ -1,0 +1,76 @@
+<div style="height: 52px;">
+</div>
+
+<!-- input -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">
+            Categories
+        </div>
+        <div class="col-md-1">
+            <p-multiSelect [options]="categories" [style]="{'width':'207px'}" [(ngModel)]="SelectedEventsCategories" (ngModelChange)="categoriesChanged($event)"></p-multiSelect>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            Start
+        </div>
+        <div class="col-md-1">
+            <p-calendar name="start" [(ngModel)]="dateStart" (ngModelChange)="loadEventsData()" [maxDate]="dateEnd" dateFormat="dd.mm.yy" [showIcon]="true" [appendTo]="body" [utc]='true'>
+                <ng-template pTemplate="date" let-date>
+                    <span style="font-size:9.5px">{{ date.day }}<br><b>{{ date | DOY }}</b></span>
+                </ng-template>
+            </p-calendar>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            End
+        </div>
+        <div class="col-md-1">
+            <p-calendar name="end" [(ngModel)]="dateEnd" (ngModelChange)="loadEventsData()" [minDate]="dateStart" dateFormat="dd.mm.yy" [showIcon]="true" [appendTo]="body" [utc]='true'>
+                <ng-template pTemplate="date" let-date>
+                    <span style="font-size:9.5px">{{ date.day }}<br><b>{{ date | DOY }}</b></span>
+                </ng-template>
+            </p-calendar>
+        </div>
+    </div>
+</div>
+<!-- <p-schedule class="calendar" [events]="events" [height]="700" [header]="header" [editable]="true" (onViewRender)="loadEvents($event)" (onDayClick)="addEventFromCalendar($event)" locale="en-gb" (onEventClick)="editEventFromCalendar($event)" (onEventDrop)="Move($event, false)" (onEventResize)="Move($event, true)"></p-schedule> -->
+<!-- <p-schedule class="calendar"></p-schedule> -->
+<!-- <p-fullCalendar [events]="events"></p-fullCalendar> -->
+
+<!-- event details component dialog-->
+<div #ItemDetailsAnchor></div>
+
+<!-- event table -->
+<div class="panel panel-default">
+    <p-dataTable [value]="events" [(selection)]="selectedEvent" [contextMenu]="cm" selectionMode="single" [responsive]="true">
+        <p-header> Events
+            <div class="ui-helper-clearfix" style="width:100%"><button class="btn btn-default" (click)="Edit(true, true, true)" style="float:left"><span class="glyphicon glyphicon-plus"></span>Add event</button></div>    
+        </p-header>  
+            <p-column header="Start" field="dtstart" [sortable]="true" [style]="{'width':'200 px','overflow': 'hidden'}">
+                <ng-template let-event="rowData" pTemplate="body">
+                    <span>{{event.dtstart | date:'dd-MM-yyyy HH:mm':'+0000'}}</span>
+                </ng-template>
+            </p-column>
+            <p-column header="End" [style]="{'width':'200 px','overflow': 'hidden'}">
+                <ng-template let-event="rowData" pTemplate="body">
+                    <span>{{event.dtend | date:'dd-MM-yyyy HH:mm':'+0000'}}</span>
+                </ng-template> 
+            </p-column>
+            <p-column field="summary" header="Summary" [sortable]="true"></p-column>
+            <p-column field="status" header="Status" [sortable]="true"></p-column>
+            <p-column field="categories" header="Tags"></p-column>
+            <p-column header="Lastmod." field="lastmod" [sortable]="true">
+            <ng-template let-event="rowData" pTemplate="body">
+                <span>{{event.lastmod | date:'dd-MM-yyyy HH:mm':'+0000'}} ({{ event.user }})</span>
+            </ng-template>
+            </p-column>
+        <p-footer></p-footer>
+    </p-dataTable>
+</div>
+
+<!-- contextmenu --> 
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+

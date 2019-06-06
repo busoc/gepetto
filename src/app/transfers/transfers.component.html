@@ -1,0 +1,450 @@
+<div style="height: 52px;">
+</div>
+
+<style>
+.ui-dropdown .ui-dropdown-trigger { width: 20px; }
+.ui-dropdown {padding-right: 20px;}
+.test {overflow: visible; }
+</style>
+
+<div #ItemDetailsAnchor></div>
+
+<div class="ui-g ui-fluid" id="results">
+    <div class="ui-g-12 ui-md-2">
+        <h2 style="text-align:center">Ground</h2> 
+        <input type="file" (change)="addFile($event)" />
+        <p-tree  [value]="GroundFilesTree" selectionMode="single" [(selection)]="selectedGroundFile" [loading]="loading" (onNodeSelect)="fileTreeSelect($event)"></p-tree>
+        <!-- <p-dataTable [value]="files" [responsive]="true" [scrollable]="true" scrollHeight="650px" [loading]="loading">
+                <p-column field="name" header="Name" [style]="{'width':'120 px','overflow': 'hidden','text-align': 'left'}" ></p-column>
+        </p-dataTable>     -->
+    </div>
+
+    <div class="ui-g-12 ui-md-2" style="text-align:center">
+        <i class="fa fa-exchange" style="font-size:36px;margin-top: 28px;"></i>
+        <p-dataTable [value]="upcomingUplinks" [loading]="loading">
+                <p-header> <b>Uplinks</b> </p-header>  
+                <p-column field="event.summary" header="Activity" ></p-column>
+                <p-column field="file.name" header="File" [style]="{'width':'150 px','overflow': 'hidden'}"></p-column>
+        </p-dataTable>    
+    </div>
+    
+    <div class="ui-g-12 ui-md-4" style="text-align:center" >
+        <h2>MMU</h2>
+        <p-dataTable [value]="slots" [loading]="loading" sortField="uid"> 
+            <p-column field="uid" header="SID" [style]="{'width':'90px'}"></p-column>
+            <p-column field="name" header="Slot name" [style]="{'width':'120 px','overflow': 'hidden'}">
+                <ng-template let-item="rowData" pTemplate="body">
+                    <span>{{item.name | uppercase}}</span>
+                </ng-template>   
+            </p-column>
+            <p-column field="file" header="Current file" [style]="{'overflow': 'hidden'}">
+                <ng-template let-item="rowData" pTemplate="body">
+                    <span *ngIf="item.status === 'scheduled'" >{{item.file }} (scheduled) </span>
+                    <span *ngIf="item.status === 'completed'" >{{item.file}} </span>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>
+    
+    <div class="ui-g-12 ui-md-2" style="text-align:center">
+        <i class="fa fa-exchange" style="font-size:36px;margin-top: 28px;"></i>
+        <p-dataTable [value]="upcomingTransfers" [loading]="loading">
+                <p-header> <b>Transfers</b> </p-header>  
+                <p-column field="event.summary" header="Activity"></p-column>
+                <p-column field="file.name" header="File" [style]="{'overflow': 'hidden'}"></p-column>
+        </p-dataTable> 
+        <p-dataTable [value]="upcomingDownlinks" [loading]="loading">
+                <p-header> <b>Downlinks</b> </p-header>  
+                <p-column field="event.summary" header="Activity"></p-column>
+                <p-column field="file.name" header="File" [style]="{'overflow': 'hidden'}"></p-column>
+        </p-dataTable> 
+    </div>
+    
+    <div class="ui-g-12 ui-md-2">
+        <h2 style="text-align:center">{{ _ApplicationService.getPayload() |  uppercase }} </h2>
+        <!-- <button type="button" class="btn btn-default" (click)="wipeSelectedFilesOnboard()"><span class="fa fa-trash-o"></span> Wipe selected files from {{ _ApplicationService.getPayload() |  uppercase }}</button><br> -->
+        <!-- <p-tree [value]="OnboardFilesTree" selectionMode="checkbox" [loading]="loading" [(selection)]="selectedOnboardFiles" [loading]="loading"></p-tree> -->
+        <p-tree [value]="OnboardFilesTree" selectionMode="single" [loading]="loading" [(selection)]="selectedOnboardFile" [loading]="loading" (onNodeSelect)="fileTreeSelect($event)"></p-tree>
+    </div>
+    <div class="ui-g-12 ui-md-1">
+        
+    </div>
+</div>
+
+<!-- Uplinks -->
+<div class="panel panel-default">
+    <p-dataTable [value]="upcomingUplinks" [(selection)]="selectedUplinks" [responsive]="true" #dt1 sortField="event.summary" [loading]="loadingUplinks" rowGroupMode="subheader" groupField="event.summary" expandableRowGroups="true" [sortableRowGroup]="false">
+        <p-header> <b>Uplinks</b> </p-header>  
+        <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['headerName']}}</ng-template>
+        <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+        <p-column field="file.name" header="File" [style]="{'width':'200px'}"></p-column>
+        <p-column field="slot.name" header="Slot" [style]="{'width':'190px','overflow': 'hidden'}">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{item.slot.name | uppercase}}</span>
+            </ng-template>   
+        </p-column>
+        <p-column field="dropbox" header="Dropbox filename" [style]="{'overflow': 'hidden'}"></p-column>
+        <p-column field="file.length" header="Size" [style]="{'width':'80px'}"></p-column>
+        <p-column field="slot.category" header="Payload" [style]="{'width':'80px'}"></p-column>
+        <p-column field="lastmod" header="Lastmodified" [style]="{'width':'185px'}" [sortable]="true">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{item.lastmod | date:'dd-MM-yyyy HH:mm':'+0000'}} ({{ item.user }})</span>
+            </ng-template>
+        </p-column>
+        <p-footer>
+            <div class="ui-helper-clearfix" style="width:100%">
+                <button class="btn btn-default" data-toggle="modal" data-target="#adduplinktransfer-modal" style="float:left"><span class="glyphicon glyphicon-plus"></span> Add Uplink/Transfer</button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#adduplink-modal" style="float:left"><span class="glyphicon glyphicon-plus"></span> Add Uplink</button>
+                <button type="button" class="btn btn-default" style="float:left" (click)="markUplinksComplete()"><span class="fa fa-check"></span> Complete</button>
+                <!-- <button type="button" class="btn btn-default" style="float:left" (click)="downloadCommandStack()"><span class="fa fa-download"></span> Download CS (FSL Only)</button> -->
+                <button type="button" class="btn btn-default" style="float:left" (click)="generateUplinkICN()"><span class="fa fa-file-text-o"></span> Generate ICN</button>  
+                <!-- <button type="button" class="btn btn-default" style="float:left" (click)="downloadFiles()"><span class="fa fa-file-text-o"></span> Download dropbox files</button>    -->
+            </div>
+        </p-footer>
+    </p-dataTable>
+</div>
+
+<!-- Transfers -->
+<div class="panel panel-default">
+    <p-dataTable [value]="upcomingTransfers" [(selection)]="selectedTransfers" [loading]="loadingTransfers" [responsive]="true" #dt2 sortField="event.summary" rowGroupMode="subheader" groupField="event.summary" expandableRowGroups="true" [sortableRowGroup]="false">
+        <p-header> <b>Transfers</b> </p-header>  
+        <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['headerName']}}</ng-template>
+        <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+        <p-column field="file.name" header="File" [style]="{'width':'200px', 'overflow': 'hidden'}"></p-column>
+        <p-column field="slot.name" header="Slot" [style]="{'width':'190px', 'overflow': 'hidden'}">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{ item.slot.name | uppercase }} </span>
+            </ng-template>
+        </p-column>
+        <p-column field="location" header="Destination"></p-column>   
+        <p-column field="file.crc" header="CRC" [style]="{'width':'80px', 'overflow': 'hidden'}"></p-column>      
+        <p-column field="file.sum" header="Checksum" [style]="{'width':'250px', 'overflow': 'hidden'}"></p-column>  
+        <p-column field="lastmod" header="Lastmodified" [style]="{'width':'185px'}" [sortable]="true">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{item.lastmod | date:'dd-MM-yyyy HH:mm':'+0000'}} ({{ item.user }})</span>
+            </ng-template>
+        </p-column>
+        <p-footer>
+            <div class="ui-helper-clearfix" style="width:100%">
+                <button class="btn btn-default" data-toggle="modal" data-target="#addtransfer-modal" style="float:left"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                <button type="button" class="btn btn-default" style="float:left" (click)="markTransfersComplete()"><span class="fa fa-check"></span> Complete</button>
+                <!-- <button type="button" class="btn btn-default" style="float:left" (click)="downloadCommandStack()"><span class="fa fa-download"></span> Download File renaming CS</button> -->
+                <button type="button" class="btn btn-default" style="float:left" (click)="generateTransferICN()"><span class="fa fa-file-text-o"></span> Generate ICN</button>                
+            </div>
+        </p-footer>
+    </p-dataTable>
+</div>
+
+<!-- Downlinks -->
+<div class="panel panel-default">
+    <p-dataTable [value]="upcomingDownlinks" [(selection)]="selectedDownlinks" [responsive]="true" #dt3 sortField="event.summary" rowGroupMode="subheader" groupField="event.summary" expandableRowGroups="true"
+    [sortableRowGroup]="false">
+        <p-header> <b>Downlinks</b> </p-header>  
+        <ng-template pTemplate="rowgroupheader" let-rowData>{{rowData['headerName']}}</ng-template>
+        <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+        <p-column field="file.name" header="File"></p-column>
+        <p-column field="slot.name" header="Slot" [style]="{'width':'200px'}">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{item.slot.name | uppercase}}</span>
+            </ng-template>   
+        </p-column>
+        <p-column field="status" header="Status" filterMatchMode="in" [style]="{'width':'100px'}">
+            <ng-template pTemplate="filter" let-col>
+                    <p-multiSelect [options]="_ApplicationService.getStatusList()" [(ngModel)]="test3" defaultLabel="All" (onChange)="dt3.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter" [style]="{'color': 'black'}"></p-multiSelect>
+            </ng-template>
+        </p-column>
+        <p-column field="slot.category" header="Payload" [style]="{'width':'80px'}"></p-column>
+        <p-column field="lastmod" header="Lastmodified" [style]="{'width':'185px'}" [sortable]="true">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{item.lastmod | date:'dd-MM-yyyy HH:mm':'+0000'}} ({{ item.user }})</span>
+            </ng-template>
+        </p-column>
+        <p-footer>
+            <div class="ui-helper-clearfix" style="width:100%">
+                <button class="btn btn-default" data-toggle="modal" data-target="#adddownlink-modal" style="float:left"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                <button type="button" class="btn btn-default" style="float:left" (click)="markDownlinksComplete()"><span class="fa fa-check"></span> Complete</button>
+                <!-- <button type="button" class="btn btn-default" style="float:left" (click)="downloadCommandStack()"><span class="fa fa-download"></span> Download CS (FSL Only)</button> -->
+                <button type="button" class="btn btn-default" style="float:left" (click)="generateDownlinkICN()"><span class="fa fa-file-text-o"></span> Generate ICN</button>                
+            </div>
+        </p-footer>
+    </p-dataTable>
+</div>
+
+<!--Slots-->
+<div>
+    <p-dataTable [value]="slots">
+        <p-header> <b> {{ _ApplicationService.getPayload() | uppercase }} MMU Slots </b></p-header> 
+        <p-column field="uid" header="SID"></p-column>
+        <p-column field="name" header="Slot name">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{item.name | uppercase}}</span>
+            </ng-template>           
+        </p-column>
+        <p-column field="file" header="Current file">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span *ngIf="item.status === 'scheduled'" >{{item.file }} (scheduled) </span>
+                <span *ngIf="item.status === 'completed'" >{{item.file}} </span>
+            </ng-template>
+        </p-column>
+        <p-column field="category" header="Payload"></p-column>
+        <!-- <p-column field="lastmod" header="Lastmodified" [sortable]="true">
+            <ng-template let-item="rowData" pTemplate="body">
+                <span>{{item.lastmod | date:'dd-MM-yyyy HH:mm':'+0000'}}  ({{ item.user }})</span>
+            </ng-template>
+        </p-column> -->
+        <p-footer></p-footer>
+    </p-dataTable>
+</div>
+
+<!-- contextmenu -->
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+
+<!-- add Uplink and transfer dialog -->
+<div class="modal fade" id="adduplinktransfer-modal" data-backdrop="false">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">Add Uplink - Transfer</h4>
+            </div>
+                <div class="modal-body">
+            <form class="form-horizontal" #uplinkTransferForm="ngForm">
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="slot">MMU slot</label>
+                    <div class="col-sm-5" name="slot">
+                        <p-dropdown name="mmuslot" placeholder="Select an MMU slot position" [options]="slots" [(ngModel)]="selectedSlot" [style]="{'width':'429px','overflow':'visible'}" [required]="true"></p-dropdown>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="payload">Payload</label>
+                    <div class="col-sm-5" name="payload">
+                        <span *ngIf="selectedSlot" [style]="{'width':'400px'}">{{ selectedSlot.category | uppercase }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="file">File</label>
+                    <div class="col-sm-5" name="file">
+                        <p-tree [value]="GroundFilesTree" [style]="{'height':'250px','width':'427px'}" selectionMode="single" [(selection)]="selectedGroundFile" [loading]="loading"></p-tree>
+                    </div>
+                </div>      
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="selectedFile">Selected file</label>
+                    <div class="col-sm-5" name="selectedFile">
+                        <span *ngIf="selectedGroundFile">{{ selectedGroundFile.label }}</span>
+                    </div>
+                </div>    
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="uplink">Uplink event</label>
+                    <div class="col-sm-5" name="uplink">
+                        <p-dropdown name="uplinkevent" placeholder="Select an uplink event" [options]="uplinkEvents" [required]="true" [(ngModel)]="selectedUplinkActivity" [style]="{'width':'429px','overflow':'visible'}"></p-dropdown>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="transfer">Transfer event</label>
+                    <div class="col-sm-5" name="transfer">
+                        <p-dropdown name="transferevent" placeholder="Select a transfer event" [options]="transferEvents" [required]="true"  [(ngModel)]="selectedTransferActivity" [style]="{'width':'429px','overflow':'visible'}"></p-dropdown>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="destination">Destination directory</label>
+                    <div class="col-sm-5" name="destination">
+                        <input pInputText name="directory" id="location" [required]="true" [(ngModel)]="location" [style]="{'width':'400px'}"/>
+                    </div>
+                </div>          
+                <!-- 
+                <div class="ui-grid ui-grid-responsive ui-fluid test">
+                    <div class="ui-grid-row test">
+                        <div class="ui-grid-col-4"><label for="slots">MMU Slot</label></div>
+                        <div class="ui-grid-col-6">
+                            <p-dropdown name="mmuslot" placeholder="Select an MMU slot position" [options]="slots" [(ngModel)]="selectedSlot" [style]="{'width':'429px','overflow':'visible'}" [required]="true"></p-dropdown>
+                        </div>
+                        <div class="ui-grid-col-2"></div>
+                    </div>
+                    <div class="ui-grid-row test">
+                        <div class="ui-grid-col-4"><label for="files">File on ground</label></div>
+                        <div class="ui-grid-col-6">
+                            <p-tree [value]="GroundFilesTree" [style]="{'height':'300px'}" selectionMode="single" [(selection)]="selectedGroundFile" [loading]="loading"></p-tree>
+                        </div>
+                        <div class="ui-grid-col-2"></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="selectedfile">Selected file</label></div>
+                        <div class="ui-grid-col-8">
+                            <span *ngIf="selectedGroundFile">{{ selectedGroundFile.label }}</span>
+                        </div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="events">Uplink event (category: uplink)</label></div>
+                        <div class="ui-grid-col-8">
+                            <p-dropdown name="uplinkevent" placeholder="Select an uplink event" [options]="uplinkEvents" [required]="true" [(ngModel)]="selectedUplinkActivity" [style]="{'width':'429px','overflow':'visible'}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="events">Transfer event (category: transfer)</label></div>
+                            <div class="ui-grid-col-6">
+                                <p-dropdown name="transferevent" placeholder="Select a transfer event" [options]="transferEvents" [required]="true"  [(ngModel)]="selectedTransferActivity" [style]="{'width':'429px','overflow':'visible'}"></p-dropdown>
+                            </div>
+                            <div class="ui-grid-col-2"></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="location">Payload destination directory</label></div>
+                            <div class="ui-grid-col-6"><input pInputText name="directory" id="location" [required]="true" [(ngModel)]="location" /></div>
+                            <div class="ui-grid-col-2"></div>
+                        </div> 
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="payload">Payload</label></div>
+                        <div class="ui-grid-col-4">
+                            <span *ngIf="selectedSlot" [style]="{'width':'400px'}">{{ selectedSlot.category | uppercase }}</span>
+                        </div>
+                        <div class="ui-grid-col-4"></div>
+                    </div>
+                </div> -->
+            </form>
+                </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button class="btn btn-default" data-dismiss="modal" [disabled]="!uplinkTransferForm.form.valid" (click)="createUplinkTransfer()">Add Uplink/Transfer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- add Uplink dialog -->
+<div class="modal fade" id="adduplink-modal" data-backdrop="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title">Add Uplink</h4>
+      </div>
+      <div class="modal-body">
+        <div class="ui-grid ui-grid-responsive ui-fluid test">
+            <div class="ui-grid-row test">
+                <div class="ui-grid-col-4"><label for="slots">Slot</label></div>
+                <div class="ui-grid-col-8">
+                    <p-dropdown placeholder="Select an MMU slot position" [options]="slots" [(ngModel)]="selectedSlot" [style]="{width:'500px', 'overflow':'visible'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="ui-grid-row test">
+                <div class="ui-grid-col-4"><label for="files">File</label></div>
+                <div class="ui-grid-col-8">
+                    <!-- <p-dropdown placeholder="Select a file" [options]="files" filter="true" [(ngModel)]="selectedFile" [style]="{width:'500px', 'overflow':'visible'}"></p-dropdown> -->
+                    <p-tree  [value]="GroundFilesTree" selectionMode="single" [(selection)]="selectedGroundFile" [loading]="loading"></p-tree>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="events">Uplink activity</label></div>
+                <div class="ui-grid-col-8">
+                    <p-dropdown placeholder="Select an uplink event" [options]="uplinkEvents" [(ngModel)]="selectedUplinkActivity" [style]="{width:'500px','overflow':'visible'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="payload">Payload</label></div>
+                <div class="ui-grid-col-8">
+                    <span *ngIf="selectedSlot" >{{ selectedSlot.category | uppercase }}</span>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-default" data-dismiss="modal" (click)="createUplink()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add Transfer dialog, should be accessible from files view to schedule it from there -->
+<div class="modal fade" id="addtransfer-modal" data-backdrop="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title">Add Transfer</h4>
+      </div>
+      <div class="modal-body">
+        <div class="ui-grid ui-grid-responsive ui-fluid test">
+            <div class="ui-grid-row test">
+                <div class="ui-grid-col-4"><label for="slots">Uplink</label></div>
+                <div class="ui-grid-col-8">
+                    <p-dropdown placeholder="Select an uplink activty" [options]="uplinks" [(ngModel)]="selectedUplink" [style]="{width:'450px', 'overflow':'visible'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="events">Transfer activity</label></div>
+                <div class="ui-grid-col-8">
+                    <p-dropdown placeholder="Select a transfer event" [options]="transferEvents" [(ngModel)]="selectedTransferActivity" [style]="{width:'450px','overflow':'visible'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="location">Destination directory</label></div>
+                <div class="ui-grid-col-8"><input pInputText id="location" [(ngModel)]="location" /></div>
+            </div>  
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="payload">Payload</label></div>
+                <div class="ui-grid-col-8">
+                    <span *ngIf="selectedUplink" >{{ selectedUplink.slot.category | uppercase }}</span>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-default" data-dismiss="modal" (click)="createTransfer()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add Downlink -->
+<div class="modal fade" id="adddownlink-modal" data-backdrop="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+           <h4 class="modal-title">Add Downlink</h4>
+        </div>
+        <div class="modal-body">
+            <div class="ui-grid ui-grid-responsive ui-fluid test">
+                <div class="ui-grid-row test">
+                    <div class="ui-grid-col-4"><label for="slots">MMU Slot</label></div>
+                    <div class="ui-grid-col-8">
+                        <p-dropdown placeholder="Select an MMU slot" [options]="slots" [(ngModel)]="selectedSlot" [style]="{width:'450px', 'overflow':'visible'}"></p-dropdown>
+                    </div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-4"><label for="events">Downlink activity</label></div>
+                    <div class="ui-grid-col-8">
+                        <p-dropdown placeholder="Select a transfer event" [options]="transferEvents" [(ngModel)]="selectedDownlinkActivity" [style]="{width:'450px','overflow':'visible'}"></p-dropdown>
+                    </div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-4"><label for="files">File</label></div>
+                    <div class="ui-grid-col-8">
+                        <!-- <p-dropdown placeholder="Select a file" filter="true" [options]="files" [(ngModel)]="selectedFile" [style]="{width:'450px', 'overflow':'visible'}"></p-dropdown> -->
+                        <p-tree [value]="OnboardFilesTree" selectionMode="single" [(selection)]="selectedOnBoardFile" [loading]="loading"></p-tree>
+                    </div>
+                </div>
+                <!-- <div class="ui-grid-row">
+                    <div class="ui-grid-col-4"><label for="location">Destination directory</label></div>
+                    <div class="ui-grid-col-8"><input pInputText id="location" [(ngModel)]="location" /></div>
+                </div>   -->
+                <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="payload">Payload</label></div>
+                        <div class="ui-grid-col-8">
+                            <span *ngIf="selectedSlot" >{{ selectedSlot.category | uppercase }}</span>
+                        </div>
+                    </div>  
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-default" data-dismiss="modal" (click)="createDownlink()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- history dialog -->
+<p-dialog header="Event History" width="800" [(visible)]="displayHistoryDialog" [responsive]="true" showEffect="fade" [modal]="true">
+    <p-dataTable [value]="eventHistory" [(selection)]="selectedPastEvent" selectionMode="single" [responsive]="true">
+        <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" sortable="true"></p-column>
+        <footer><div class="ui-helper-clearfix" style="width:100%"><button class="btn btn-default" (click)="revertEvent()">Revert</button></div></footer>
+    </p-dataTable>
+</p-dialog>

@@ -1,0 +1,84 @@
+/* this file will be extracted to main dist folder and is imported in index.html */
+/* This file is for setting global styles  */
+@import 'variables';
+@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+// @import '../../node_modules/bootstrap/scss/bootstrap';
+@import '../../node_modules/font-awesome/css/font-awesome.css';
+@import '../../node_modules/primeng/resources/primeng.min.css';
+@import '../../node_modules/primeng/resources/themes/bootstrap/theme.css'; // be carefull! this theme does not contain the 'toast' css. it has been manually copied from the nova-light theme!!
+// @import '../../node_modules/primeng/resources/themes/nova-dark/theme.css';
+@import '../../node_modules/primeicons/primeicons.css';
+@import '../../node_modules/fullcalendar/dist/fullcalendar.min.css';
+@import '../../node_modules/froala-editor/css/froala_editor.pkgd.min.css';
+@import '../../node_modules/quill/dist/quill.core.css';
+@import '../../node_modules/quill/dist/quill.snow.css';
+
+// own styles:
+
+.modal-backdrop {
+    opacity: 0.5 !important;
+}
+.fc-today {
+    background: #e6f3fe !important;
+}
+
+html, body {
+    height: 100%;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442;
+}
+
+.center-div
+{
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 480px;
+  height: 380px;
+  border-radius: 3px;
+}
+
+.align-bottom-span {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.container-fixed-navbar{
+    position:absolute;
+    width:100%;
+}
+.navbar-fixed-in-container{
+    position:fixed;
+    width:100%;
+}
+
+.navbar-center-date
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin:0 auto;
+}
+
+/*
+ * Override z-index of picker to be higher than z-index of modal
+ */
+.ui-colorpicker-panel
+{
+    z-index: 2000 !important;
+}
+

@@ -1,0 +1,327 @@
+{
+    "ControlCenterSpecs" : {
+        "centerName" : "ICMCC",
+        "logo" : "assets/img/icecubes.png",
+        "Payloads" : [
+            {
+                "name" : "IceCubes Facility",
+                "activityTemplates": [],
+                "activitySequences": []
+            }
+        ],
+        "wikiLinkInternal" : "http://wiki.ops.spaceapplications.com/pages/viewpage.action?spaceKey=IC&title=Icecubes",
+        "wikiLinkExternal" : ""
+    },
+    "status" : [
+        {"label": "tentative", "value": "tentative"},
+        { "label": "scheduled", "value": "scheduled" },
+        { "label": "on going", "value": "on going" },
+        { "label": "completed", "value": "completed" },
+        { "label": "canceled", "value": "canceled" }
+    ],
+    "priorities" : [
+        {"label": "low", "value": "low"},
+        { "label": "normal", "value": "normal" },
+        { "label": "high", "value": "high" },
+        { "label": "urgent", "value": "urgent" }
+    ],
+    "YamcsInstances" : [
+        {"label": "icf-em", "value": "icf-em"},
+        {"label": "icf-fm", "value": "icf-fm"}
+    ],
+    "TimelineBands" : [
+        {
+            "label": "Timescale - UTC",
+            "value": {
+                "label": "UTC",
+                "description": "Display UTC time",
+                "type": "Timescale",
+                "interactive": false,
+                "tz": "UTC"
+            }
+        },
+        {
+            "label": "Timescale - Local",
+            "value": {
+                "label": "Local",
+                "description": "Display local time",
+                "type": "Timescale",
+                "interactive": false
+            }
+        }, 
+        {
+            "label": "Spacer band",
+            "value": {
+                "label": "Spacer",
+                "description": "Invisible spacer band to seperate bands vertically",
+                "type": "SpacerBand",
+                "interactive": false
+            }
+        }, 
+        {
+            "label": "OPTIMIS - TDRS",
+            "value": {
+                "label": "TDRS",
+                "description": "Comms data, coming from OPTIMIS",
+                "type": "CommsBand",
+                "interactive": true,
+                "what": "TDRS",
+                "bands": [
+                    {
+                        "type": "Ku",
+                        "color": "#ffa500"
+                    },
+                    {
+                        "type": "S",
+                        "color": "#159d02"
+                    }
+                ],
+                "events": [],
+                "visibleZoomLevel": 8,
+                "interactiveSidebar": true
+            }
+        },  
+        {
+            "label": "OPTIMIS - Day/Night",
+            "value": {
+                "label": "Day / Night",
+                "description": "Day/Night data from OPTIMIS",
+                "type": "DayNightBand",
+                "interactive": true,
+                "what": "Day/Night",
+                "events": [],
+                "visibleZoomLevel": 8,
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - ISS Attitude",
+            "value": {
+                "label": "Attitude",
+                "description": "ISS Attitude from OPTIMIS",
+                "type": "AttitudeBand",
+                "interactive": true,
+                "what": "Attitude",
+                "events": []
+            }
+        },
+        {
+            "label": "OPTIMIS - SAA",
+            "value": {
+                "label": "SAA",
+                "description": "ISS South Atlantic Anomaly from OPTIMIS data",
+                "type": "SaaBand",
+                "interactive": true,
+                "what": "SAA",
+                "visibleZoomLevel": 8,
+                "events": [],
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - COL RESOURCE",
+            "value": {
+                "label": "COL RESOURCE",
+                "description": "COL RESOURCE band from OPTIMIS",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "OPTIMIS CR",
+                "events": [],
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - JSL-2",
+            "value": {
+                "label": "JSL-2",
+                "description": "JSL-2 band from OPTIMIS",
+                "type": "EventBand",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactive": true,
+                "what": "OPTIMIS JSL-2",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - VIDEO CHANNELS",
+            "value": {
+                "label": "VIDEO CHANNELS",
+                "description": "VIDEO CHANNELS band from OPTIMIS",
+                "type": "EventBand",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactive": true,
+                "what": "OPTIMIS VC",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "OPTIMIS - COL",
+            "value": {
+                "label": "COL",
+                "description": "COL band from OPTIMIS",
+                "type": "EventBand",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "interactive": true,
+                "what": "OPTIMIS COL",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        }, 
+        {
+            "label": "OPTIMIS - KU-BD",
+            "value": {
+                "label": "KU-BD",
+                "description": "KU-BD band from OPTIMIS",
+                "type": "EventBand",
+                "interactive": true,
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "what": "OPTIMIS KU-BD",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        }, 
+        {
+            "label": "OPTIMIS - MCC COORD",
+            "value": {
+                "label": "MCC COORD",
+                "description": "MCC COORD band from OPTIMIS",
+                "type": "EventBand",
+                "interactive": true,
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "what": "OPTIMIS MC",
+                "events": [],
+                "interactiveSidebar": true
+            }
+        }, 
+        {
+            "label": "Increment timing",
+            "value": {
+                "label": "Increment timing",
+                "description": "Display increment-xmonths and increment+weeks based on the increment start date and end date.",
+                "type": "OrbitNumberBand",
+                "interactive": false,
+                "what": "Increment timing",
+                "events": [],
+                "hatchUncovered": false,
+                "incrementStartDate": "",
+                "incrementEndDate": ""
+            }
+        },
+        {
+            "label": "Tagged events",
+            "value": {
+                "label": "Tagged events",
+                "description": "Display custom events based on their tags.",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "Tagged events",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "filterCategories": [],
+                "leakEventBackground": false,
+                "showExecutedTimes": false,
+                "interactiveSidebar": true
+            }
+        },
+        {
+            "label": "Yamcs - Archived Telemetry",
+            "value": {
+                "label": "Yamcs archived telemetry",
+                "description": "Display Yamcs achrived Telemetry",
+                "type": "EventBand",
+                "interactive": true,
+                "what": "Yamcs archived telemetry",
+                "style": {
+                    "gutterBackgroundColor": "#f0f0f0",
+                    "backgroundColor": "#5bc0de",
+                    "textColor": "5bc0de",
+                    "borderColor": "#5bc0de",
+                    "bandBackgroundColor": "#ffffff"
+                },
+                "events": [],
+                "yamcsInstance": "",
+                "yamcsParameter": "",
+                "leakEventBackground": false
+            }
+        }
+    ],
+    "defaultTimelines" : [
+        {
+            "label": "myTimeline1",
+            "value": {
+                "index": 0,
+                "name": "myTimeline1",
+                "bands": []
+            }
+        },
+        {
+            "label": "myTimeline2",
+            "value": {
+                "index": 1,
+                "name": "myTimeline2",
+                "bands": []
+            }
+        },
+        {
+            "label": "myTimeline3",
+            "value": {
+                "index": 2,
+                "name": "myTimeline3",
+                "bands": []
+            }
+        },
+        {
+            "label": "myTimeline4",
+            "value": {
+                "index": 3,
+                "name": "myTimeline4",
+                "bands": []
+            }
+        }
+    ]
+}
