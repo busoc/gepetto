@@ -107,7 +107,6 @@ export class TimelineReviewsComponent implements OnInit {
   }
 
   private generateTLRTable(activities) {
-    console.log(activities);
     let TLRStart = Moment.utc().hours(6).minutes(0).seconds(0).milliseconds(0);
     let TLREnd = Moment.utc().hours(6).minutes(0).seconds(0).milliseconds(0).add(1,'days');
     this.TLRData = [
